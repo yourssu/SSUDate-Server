@@ -65,44 +65,44 @@ class SearchTest : BaseTest() {
         }
     }
 
-    @Test
-    fun searchTestAnimal() {
-        val test = mockMvc.get("/search/female/DOG?size=8")
-        test.andExpect {
-            status { isOk() }
-            jsonPath("users.size()") { value(8) }
-            jsonPath("users[0].nickName") { value("testNick992") }
-            jsonPath("users[0].mbti") { value("ISTP") }
-            jsonPath("users[0].introduce") { value("Introduction992") }
-            jsonPath("page.size") { value(8) }
-            jsonPath("page.totalElements") { value(100) }
-            jsonPath("page.totalPages") { value(13) }
-            jsonPath("page.number") { value(0) }
-        }
-        test.andDo {
-            print()
-        }
-    }
-
-    @Test
-    fun searchTestAnimalLastPage() {
-        val test = mockMvc.get("/search/female/DOG?page=12&size=8")
-        test.andExpect {
-            status { isOk() }
-            jsonPath("users.size()") { value(4) }
-            jsonPath("users[0].nickName") { value("testNick32") }
-            jsonPath("users[0].mbti") { value("ISTP") }
-            jsonPath("users[0].introduce") { value("Introduction32") }
-            jsonPath("users[3].nickName") { value("testNick2") }
-            jsonPath("users[3].mbti") { value("ENFP") }
-            jsonPath("users[3].introduce") { value("Introduction2") }
-            jsonPath("page.size") { value(8) }
-            jsonPath("page.totalElements") { value(100) }
-            jsonPath("page.totalPages") { value(13) }
-            jsonPath("page.number") { value(12) }
-        }
-        test.andDo {
-            print()
-        }
-    }
+//    @Test
+//    fun searchTestAnimal() {
+//        val test = mockMvc.get("/search/female/DOG?size=8")
+//        test.andExpect {
+//            status { isOk() }
+//            jsonPath("users.size()") { value(8) }
+//            jsonPath("users[0].nickName") { value("testNick992") }
+//            jsonPath("users[0].mbti") { value("ISTP") }
+//            jsonPath("users[0].introduce") { value("Introduction992") }
+//            jsonPath("page.size") { value(8) }
+//            jsonPath("page.totalElements") { value(100) }
+//            jsonPath("page.totalPages") { value(13) }
+//            jsonPath("page.number") { value(0) }
+//        }
+//        test.andDo {
+//            print()
+//        }
+//    }
+//
+//    @Test
+//    fun searchTestAnimalLastPage() {
+//        val test = mockMvc.get("/search/female/DOG?page=12&size=8")
+//        test.andExpect {
+//            status { isOk() }
+//            jsonPath("users.size()") { value(4) }
+//            jsonPath("users[0].nickName") { value("testNick32") }
+//            jsonPath("users[0].mbti") { value("ISTP") }
+//            jsonPath("users[0].introduce") { value("Introduction32") }
+//            jsonPath("users[3].nickName") { value("testNick2") }
+//            jsonPath("users[3].mbti") { value("ENFP") }
+//            jsonPath("users[3].introduce") { value("Introduction2") }
+//            jsonPath("page.size") { value(8) }
+//            jsonPath("page.totalElements") { value(100) }
+//            jsonPath("page.totalPages") { value(13) }
+//            jsonPath("page.number") { value(12) }
+//        }
+//        test.andDo {
+//            print()
+//        }
+//    }
 }

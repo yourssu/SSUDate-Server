@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.yourssu.ssudateserver.entity.Auth
 import com.yourssu.ssudateserver.entity.User
 import com.yourssu.ssudateserver.enums.Animals
+import com.yourssu.ssudateserver.enums.FemaleAnimals
 import com.yourssu.ssudateserver.enums.Gender
 import com.yourssu.ssudateserver.enums.MBTI
+import com.yourssu.ssudateserver.enums.MaleAnimals
 import com.yourssu.ssudateserver.repository.AuthRepository
 import com.yourssu.ssudateserver.repository.UserRepository
 import org.junit.jupiter.api.AfterEach
@@ -59,6 +61,12 @@ class BaseTest {
             var animal = Animals.values()[it % (Animals.values().size)]
             val mbti = MBTI.values()[it % (MBTI.values().size)]
             val gender = Gender.values()[it % (Gender.values().size)]
+
+            if (gender == Gender.MALE) {
+                animal = Animals.valueOf(MaleAnimals.values()[it % (MaleAnimals.values().size)].toString())
+            } else if (gender == Gender.FEMALE) {
+                animal = Animals.valueOf(FemaleAnimals.values()[it % (FemaleAnimals.values().size)].toString())
+            }
 
             if (animal == Animals.ALL) {
                 animal = Animals.PUSSUNG
