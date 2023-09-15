@@ -115,4 +115,28 @@ class RegisterMaleTest : BaseTest() {
             print()
         }
     }
+
+    @Test
+    fun registerMaleTestFailAnimalsAll() {
+        val requestDto = RegisterMaleRequestDto(
+            code = validCode,
+            animals = MaleAnimals.ALL,
+            nickName = "NICKNICK",
+            mbti = MBTI.INFP,
+            introduce = "hihihi",
+            contact = "01012345678",
+        )
+        val test = mockMvc.post("/register/male") {
+            contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(requestDto)
+        }
+
+        test.andExpect {
+            status { isBadRequest() }
+            jsonPath("message") { value("ALL은 등록불가능 합니다.") }
+        }
+        test.andDo {
+            print()
+        }
+    }
 }

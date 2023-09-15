@@ -12,6 +12,7 @@ import com.yourssu.ssudateserver.enums.Animals
 import com.yourssu.ssudateserver.enums.FemaleAnimals
 import com.yourssu.ssudateserver.enums.Gender
 import com.yourssu.ssudateserver.enums.MaleAnimals
+import com.yourssu.ssudateserver.exception.logic.AllCanNotRegisterException
 import com.yourssu.ssudateserver.service.SSUDateService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -30,6 +31,10 @@ class SSUDateController(private val ssuDateService: SSUDateService) {
 
     @PostMapping("/register/male")
     fun registerMale(@Valid @RequestBody registerRequestDto: RegisterMaleRequestDto): RegisterResponseDto {
+        if (registerRequestDto.animals == MaleAnimals.ALL) {
+            throw AllCanNotRegisterException("ALL은 등록불가능 합니다.")
+        }
+
         return ssuDateService.register(
             registerRequestDto.code,
             Animals.valueOf(registerRequestDto.animals.toString()),
@@ -43,6 +48,10 @@ class SSUDateController(private val ssuDateService: SSUDateService) {
 
     @PostMapping("/register/female")
     fun registerFemale(@Valid @RequestBody registerRequestDto: RegisterFemaleRequestDto): RegisterResponseDto {
+        if (registerRequestDto.animals == FemaleAnimals.ALL) {
+            throw AllCanNotRegisterException("ALL은 등록불가능 합니다.")
+        }
+
         return ssuDateService.register(
             registerRequestDto.code,
             Animals.valueOf(registerRequestDto.animals.toString()),

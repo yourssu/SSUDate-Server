@@ -1,5 +1,6 @@
 package com.yourssu.ssudateserver.exception
 
+import com.yourssu.ssudateserver.exception.logic.AllCanNotRegisterException
 import com.yourssu.ssudateserver.exception.logic.CodeNotFoundException
 import com.yourssu.ssudateserver.exception.logic.UnderZeroTicketException
 import com.yourssu.ssudateserver.exception.logic.UserNotFoundException
@@ -29,6 +30,12 @@ class CommonExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     fun handleUserNotFoundException(exception: UserNotFoundException, request: HttpServletRequest): ErrorResponse {
         return ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND, exception.message!!, request.requestURI)
+    }
+
+    @ExceptionHandler(AllCanNotRegisterException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleAllCanNotRegisterException(exception: AllCanNotRegisterException, request: HttpServletRequest): ErrorResponse {
+        return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
