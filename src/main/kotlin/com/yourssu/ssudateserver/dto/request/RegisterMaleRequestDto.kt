@@ -2,18 +2,16 @@ package com.yourssu.ssudateserver.dto.request
 
 import com.yourssu.ssudateserver.enums.MBTI
 import com.yourssu.ssudateserver.enums.MaleAnimals
-import io.swagger.annotations.ApiModel
-import io.swagger.annotations.ApiModelProperty
 import javax.validation.constraints.Size
 
-@ApiModel
 class RegisterMaleRequestDto(
     @field:Size(message = "인증코드는 10자리 입니다.", min = 10, max = 10)
     val code: String,
-    @ApiModelProperty
     val animals: MaleAnimals,
+    @field:Size(message = "닉네임은 최대 10글자 입니다.", min = 1, max = 10)
     val nickName: String,
     val mbti: MBTI,
+    @field:Size(message = "소개글은 최대 100글자 입니다.", min = 1, max = 100)
     val introduce: String,
     val contact: String,
 )
