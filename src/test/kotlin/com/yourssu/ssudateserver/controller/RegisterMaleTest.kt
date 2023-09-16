@@ -139,4 +139,28 @@ class RegisterMaleTest : BaseTest() {
             print()
         }
     }
+
+    @Test
+    fun registerMaleTestFailNickNameDuplicate() {
+        val requestDto = RegisterMaleRequestDto(
+            code = validCode,
+            animals = MaleAnimals.BEAR,
+            nickName = "testNick1",
+            mbti = MBTI.INFP,
+            introduce = "hihihi",
+            contact = "01012345678",
+        )
+        val test = mockMvc.post("/register/male") {
+            contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(requestDto)
+        }
+
+        test.andExpect {
+            status { isBadRequest() }
+            jsonPath("message") { value("해당 닉네임은 이미 존재합니다.") }
+        }
+        test.andDo {
+            print()
+        }
+    }
 }

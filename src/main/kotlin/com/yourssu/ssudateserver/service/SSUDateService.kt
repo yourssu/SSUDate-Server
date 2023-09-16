@@ -8,6 +8,7 @@ import com.yourssu.ssudateserver.enums.Animals
 import com.yourssu.ssudateserver.enums.Gender
 import com.yourssu.ssudateserver.enums.MBTI
 import com.yourssu.ssudateserver.exception.logic.CodeNotFoundException
+import com.yourssu.ssudateserver.exception.logic.NickNameDuplicateException
 import com.yourssu.ssudateserver.exception.logic.UnderZeroTicketException
 import com.yourssu.ssudateserver.exception.logic.UserNotFoundException
 import com.yourssu.ssudateserver.repository.AuthRepository
@@ -42,6 +43,9 @@ class SSUDateService(
             authRepository.findByCode(code) ?: throw CodeNotFoundException("code를 찾을 수 없습니다.")
         if (auth.ticket <= 0) {
             throw UnderZeroTicketException("이용권 값이 0이하입니다.")
+        }
+        if (userRepository.findByNickName(nickName) != null) {
+            throw NickNameDuplicateException("해당 닉네임은 이미 존재합니다.")
         }
         val saveUser = userRepository.save(
             User(

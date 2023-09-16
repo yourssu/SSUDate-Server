@@ -2,10 +2,10 @@ package com.yourssu.ssudateserver.exception
 
 import com.yourssu.ssudateserver.exception.logic.AllCanNotRegisterException
 import com.yourssu.ssudateserver.exception.logic.CodeNotFoundException
+import com.yourssu.ssudateserver.exception.logic.NickNameDuplicateException
 import com.yourssu.ssudateserver.exception.logic.UnderZeroTicketException
 import com.yourssu.ssudateserver.exception.logic.UserNotFoundException
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -38,9 +38,9 @@ class CommonExceptionHandler {
         return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException::class)
+    @ExceptionHandler(NickNameDuplicateException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun handleMethodArgumentNotValidException(exception: MethodArgumentNotValidException, request: HttpServletRequest): ErrorResponse {
-        return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.bindingResult.fieldError!!.defaultMessage.toString(), request.requestURI)
+    fun handleNickNameDuplicateException(exception: NickNameDuplicateException, request: HttpServletRequest): ErrorResponse {
+        return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)
     }
 }
