@@ -3,12 +3,9 @@ package com.yourssu.ssudateserver.entity
 import com.yourssu.ssudateserver.enums.Animals
 import com.yourssu.ssudateserver.enums.Gender
 import com.yourssu.ssudateserver.enums.MBTI
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.EntityListeners
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
 import javax.persistence.GeneratedValue
@@ -18,7 +15,6 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "users")
-@EntityListeners(AuditingEntityListener::class)
 class User(
     @field:Id
     @field:GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +44,6 @@ class User(
     @field:Enumerated(EnumType.STRING)
     val gender: Gender,
 
-    @field:CreatedDate
     @field:Column(name = "created_at")
-    var createdAt: LocalDateTime? = null
+    val createdAt: LocalDateTime
 )

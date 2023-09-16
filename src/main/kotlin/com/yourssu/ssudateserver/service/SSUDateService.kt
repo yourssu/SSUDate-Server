@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 
 @Service
 @Transactional
@@ -54,7 +55,8 @@ class SSUDateService(
                 nickName = nickName,
                 introduction = introduce,
                 contact = contact,
-                gender = gender
+                gender = gender,
+                createdAt = LocalDateTime.now()
             )
         )
         auth.ticket = auth.ticket - 1
