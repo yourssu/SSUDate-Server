@@ -32,9 +32,6 @@ dependencies {
     runtimeOnly("mysql:mysql-connector-java")
     runtimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    val querydslVersion = "5.0.0" // querydsl
-    implementation("com.querydsl:querydsl-jpa:$querydslVersion")
-    kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
 }
 
 tasks.withType<KotlinCompile> {

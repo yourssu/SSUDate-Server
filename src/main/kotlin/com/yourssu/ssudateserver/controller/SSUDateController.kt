@@ -7,7 +7,7 @@ import com.yourssu.ssudateserver.dto.request.RegisterMaleRequestDto
 import com.yourssu.ssudateserver.dto.response.AuthResponseDto
 import com.yourssu.ssudateserver.dto.response.ContactResponseDto
 import com.yourssu.ssudateserver.dto.response.RegisterResponseDto
-import com.yourssu.ssudateserver.dto.response.page.SearchPageResponseDto
+import com.yourssu.ssudateserver.dto.response.SearchResponseDto
 import com.yourssu.ssudateserver.enums.Animals
 import com.yourssu.ssudateserver.enums.FemaleAnimals
 import com.yourssu.ssudateserver.enums.Gender
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
@@ -66,21 +65,15 @@ class SSUDateController(private val ssuDateService: SSUDateService) {
     @GetMapping("/search/male/{animals}")
     fun searchMale(
         @PathVariable animals: MaleAnimals,
-        @RequestParam(required = false) page: Int?,
-        @RequestParam(required = false) size: Int?
-    ): SearchPageResponseDto {
-        val page = ssuDateService.search(Gender.MALE, Animals.valueOf(animals.toString()), page ?: 0, size ?: 16)
-        return SearchPageResponseDto(page)
+    ): List<SearchResponseDto> {
+        return ssuDateService.search(Gender.MALE, Animals.valueOf(animals.toString()))
     }
 
     @GetMapping("/search/female/{animals}")
     fun searchFemale(
         @PathVariable animals: FemaleAnimals,
-        @RequestParam(required = false) page: Int?,
-        @RequestParam(required = false) size: Int?
-    ): SearchPageResponseDto {
-        val page = ssuDateService.search(Gender.FEMALE, Animals.valueOf(animals.toString()), page ?: 0, size ?: 16)
-        return SearchPageResponseDto(page)
+    ): List<SearchResponseDto> {
+        return ssuDateService.search(Gender.FEMALE, Animals.valueOf(animals.toString()))
     }
 
     @PostMapping("/contact")

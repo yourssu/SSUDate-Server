@@ -3,6 +3,7 @@ package com.yourssu.ssudateserver.service
 import com.yourssu.ssudateserver.dto.response.AuthResponseDto
 import com.yourssu.ssudateserver.dto.response.ContactResponseDto
 import com.yourssu.ssudateserver.dto.response.RegisterResponseDto
+import com.yourssu.ssudateserver.dto.response.SearchResponseDto
 import com.yourssu.ssudateserver.entity.User
 import com.yourssu.ssudateserver.enums.Animals
 import com.yourssu.ssudateserver.enums.Gender
@@ -13,8 +14,6 @@ import com.yourssu.ssudateserver.exception.logic.UnderZeroTicketException
 import com.yourssu.ssudateserver.exception.logic.UserNotFoundException
 import com.yourssu.ssudateserver.repository.AuthRepository
 import com.yourssu.ssudateserver.repository.UserRepository
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -43,7 +42,7 @@ class SSUDateService(
         val auth =
             authRepository.findByCode(code) ?: throw CodeNotFoundException("code를 찾을 수 없습니다.")
         if (auth.ticket <= 0) {
-            throw UnderZeroTicketException("이용권 값이 0이하입니다.")
+            throw UnderZeroTicketException("이용권이 필요한 기능입니다. 이용권 구매 후 사용해주세요!")
         }
         if (userRepository.findByNickName(nickName) != null) {
             throw NickNameDuplicateException("해당 닉네임은 이미 존재합니다.")
@@ -73,16 +72,39 @@ class SSUDateService(
         )
     }
 
-    fun search(gender: Gender, animals: Animals, page: Int, size: Int): Page<User> {
-        val pageable = PageRequest.of(page, size)
-        return userRepository.getUserWithAnimals(gender, animals, pageable)
+    fun search(gender: Gender, animals: Animals): List<SearchResponseDto> {
+        return if (animals == Animals.ALL) {
+            userRepository.getRandomUserWithGender(gender.toString())
+                .map {
+                    user ->
+                    SearchResponseDto(
+                        animals = user.animals,
+                        nickName = user.nickName,
+                        mbti = user.mbti,
+                        introduce = user.introduction,
+                        gender = user.gender,
+                    )
+                }
+        } else {
+            userRepository.getRandomUserWithGenderAndAnimals(gender.toString(), animals.toString())
+                .map {
+                    user ->
+                    SearchResponseDto(
+                        animals = user.animals,
+                        nickName = user.nickName,
+                        mbti = user.mbti,
+                        introduce = user.introduction,
+                        gender = user.gender,
+                    )
+                }
+        }
     }
 
     fun contact(code: String, nickName: String): ContactResponseDto {
         val auth =
             authRepository.findByCode(code) ?: throw CodeNotFoundException("code를 찾을 수 없습니다.")
         if (auth.ticket <= 0) {
-            throw UnderZeroTicketException("이용권 값이 0이하입니다.")
+            throw UnderZeroTicketException("이용권이 필요한 기능입니다. 이용권 구매 후 사용해주세요!")
         }
         val user = userRepository.findByNickName(nickName) ?: throw UserNotFoundException("NickName인 유저가 없습니다.")
         auth.ticket--
