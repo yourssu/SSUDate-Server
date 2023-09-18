@@ -105,4 +105,27 @@ class ContactTest : BaseTest() {
             print()
         }
     }
+
+    @Test
+    fun contactTestFailUnderZeroTicket() {
+        val requestDto = ContactRequestDto(
+            code = validCode,
+            nickName = "testNick1"
+        )
+        mockMvc.post("/contact") {
+            contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(requestDto)
+        }
+        val test = mockMvc.post("/contact") {
+            contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(requestDto)
+        }
+        test.andExpect {
+            status { isBadRequest() }
+            jsonPath("message") { value("이용권이 필요한 기능입니다. 이용권 구매 후 사용해주세요!") }
+        }
+        test.andDo {
+            print()
+        }
+    }
 }

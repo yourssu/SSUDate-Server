@@ -163,4 +163,32 @@ class RegisterMaleTest : BaseTest() {
             print()
         }
     }
+
+    @Test
+    fun registerMaleTestFailUnderZeroTicket() {
+        val requestDto = RegisterMaleRequestDto(
+            code = validCode,
+            animals = MaleAnimals.DOG,
+            nickName = "test1",
+            mbti = MBTI.INFP,
+            introduce = "hihihi",
+            contact = "01012345678",
+        )
+        mockMvc.post("/register/male") {
+            contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(requestDto)
+        }
+        val test = mockMvc.post("/register/male") {
+            contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(requestDto)
+        }
+
+        test.andExpect {
+            status { isBadRequest() }
+            jsonPath("message") { value("이용권이 필요한 기능입니다. 이용권 구매 후 사용해주세요!") }
+        }
+        test.andDo {
+            print()
+        }
+    }
 }
