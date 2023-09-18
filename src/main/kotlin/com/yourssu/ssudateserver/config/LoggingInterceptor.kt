@@ -25,22 +25,23 @@ class LoggingInterceptor(
         @Nullable ex: java.lang.Exception?
     ) {
         val clientIP = getClientIp(request)
-
+        val clientOS = getClientOS(request)
         val cachingRequest: ContentCachingRequestWrapper = request as ContentCachingRequestWrapper
         val cachingResponse: ContentCachingResponseWrapper = response as ContentCachingResponseWrapper
         val excludedURIs = listOf(
             "/logs",
-            "/swagger-ui/index.html",
-            "/swagger-resources/configuration/ui",
-            "/swagger-resources/configuration/security",
+            "/v3/api-docs",
             "/swagger-resources",
-            "/v3/api-docs"
+            "/swagger-ui",
+            "/webjars",
+            "/swagger",
+            "/favicon"
         )
-        if (!excludedURIs.any { request.requestURI.contains(it) }) {
+        if (!excludedURIs.any { request.requestURI.startsWith(it) }) {
             accessLogRepository.save(
                 AccessLog(
                     ip = clientIP,
-                    os = System.getProperty("os.name"),
+                    os = clientOS,
                     requestURL = request.requestURL.toString(),
                     method = request.method,
                     requestBody = objectMapper.readTree(cachingRequest.contentAsByteArray).toString(),
@@ -58,5 +59,21 @@ class LoggingInterceptor(
         } else {
             request.remoteAddr
         }
+    }
+
+    private fun getClientOS(request: HttpServletRequest): String {
+        val userAgent = request.getHeader("User-Agent")
+        var osName = "Unknown"
+
+        if (userAgent != null) {
+            if (userAgent.lowercase().contains("windows")) {
+                osName = "Windows"
+            } else if (userAgent.lowercase().contains("mac")) {
+                osName = "Mac"
+            } else if (userAgent.lowercase().contains("linux")) {
+                osName = "Linux"
+            }
+        }
+        return osName
     }
 }
