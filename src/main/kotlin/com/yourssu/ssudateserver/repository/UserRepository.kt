@@ -13,5 +13,5 @@ interface UserRepository : JpaRepository<User, Long> {
     @Query(value = "SELECT * FROM users WHERE gender= :gender and animals= :animals ORDER BY rand() LIMIT 16", nativeQuery = true)
     fun getRandomUserWithGenderAndAnimals(@Param("gender") gender: String, @Param("animals") animals: String): List<User>
 
-    fun findTop15ByOrderByCreatedAtDesc(): List<User>
+    fun findTop15ByOrderByCreatedAtDescIdDesc(): List<User>
 }

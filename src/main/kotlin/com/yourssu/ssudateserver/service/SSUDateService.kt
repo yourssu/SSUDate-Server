@@ -76,7 +76,7 @@ class SSUDateService(
     }
 
     fun recentSearch(): List<SearchResponseDto> {
-        return userRepository.findTop15ByOrderByCreatedAtDesc()
+        return userRepository.findTop15ByOrderByCreatedAtDescIdDesc()
             .map {
                 user ->
                 SearchResponseDto(
