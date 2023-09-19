@@ -17,13 +17,16 @@ class AccessLog(
 
     val ip: String?,
 
+    @Column(columnDefinition = "TEXT", name = "os")
     val os: String?,
-    @Column(name = "request_url")
+
+    @Column(columnDefinition = "TEXT", name = "request_url")
     val requestURL: String,
 
     @Column(name = "method")
     val method: String,
-    @Column(name = "request_body")
+
+    @Column(columnDefinition = "TEXT", name = "request_body")
     val requestBody: String?,
 
     @Column(columnDefinition = "TEXT", name = "response_body")

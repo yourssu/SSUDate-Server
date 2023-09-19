@@ -62,23 +62,11 @@ class LoggingInterceptor(
     }
 
     private fun getClientOS(request: HttpServletRequest): String {
-        var osName = "Unknown"
-
-        try {
-            val userAgent = request.getHeader("User-Agent")
-
-            if (userAgent != null) {
-                if (userAgent.lowercase().contains("windows")) {
-                    osName = "Windows"
-                } else if (userAgent.lowercase().contains("mac")) {
-                    osName = "Mac"
-                } else if (userAgent.lowercase().contains("linux")) {
-                    osName = "Linux"
-                }
-            }
-            return osName
+        return try {
+            val osName = request.getHeader("User-Agent")
+            osName ?: "Unknown"
         } catch (e: Exception) {
-            return osName
+            "Unknown"
         }
     }
 }
