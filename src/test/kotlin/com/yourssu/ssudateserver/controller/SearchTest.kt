@@ -66,4 +66,21 @@ class SearchTest : BaseTest() {
             print()
         }
     }
+
+    @Test
+    fun searchRecentTest() {
+        val test = mockMvc.get("/search/recent")
+        var count = 0
+        test.andExpect {
+            status { isOk() }
+            jsonPath("size()") { value(15) }
+            for (i in 1000 downTo 986) {
+                jsonPath("[$count].nickName") { value("testNick$i") }
+                count++
+            }
+        }
+        test.andDo {
+            print()
+        }
+    }
 }

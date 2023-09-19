@@ -62,6 +62,11 @@ class SSUDateController(private val ssuDateService: SSUDateService) {
         )
     }
 
+    @GetMapping("/search/recent")
+    fun searchRecent(): List<SearchResponseDto> {
+        return ssuDateService.recentSearch()
+    }
+
     @GetMapping("/search/male/{animals}")
     fun searchMale(
         @PathVariable animals: MaleAnimals,

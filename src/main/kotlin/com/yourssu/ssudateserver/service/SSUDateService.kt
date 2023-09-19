@@ -27,6 +27,9 @@ class SSUDateService(
     fun auth(code: String): AuthResponseDto {
         val auth =
             authRepository.findByCode(code) ?: throw CodeNotFoundException("code를 찾을 수 없습니다.")
+        if (auth.ticket <= 0) {
+            throw CodeNotFoundException("code를 찾을 수 없습니다.")
+        }
         return AuthResponseDto(auth.code, auth.ticket)
     }
 
@@ -70,6 +73,20 @@ class SSUDateService(
             contact,
             gender
         )
+    }
+
+    fun recentSearch(): List<SearchResponseDto> {
+        return userRepository.findTop15ByOrderByCreatedAtDesc()
+            .map {
+                user ->
+                SearchResponseDto(
+                    animals = user.animals,
+                    nickName = user.nickName,
+                    mbti = user.mbti,
+                    introduce = user.introduction,
+                    gender = user.gender,
+                )
+            }
     }
 
     fun search(gender: Gender, animals: Animals): List<SearchResponseDto> {
