@@ -20,21 +20,23 @@ class AccessLogController(private val accessLogService: AccessLogService) {
         start: LocalDateTime?,
         @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         @RequestParam(required = false)
-        end: LocalDateTime?
+        end: LocalDateTime?,
     ): AccessLogPageResponse {
         return AccessLogPageResponse(
             accessLogService.getAccessLog(
-                password, page ?: 0, size ?: 15,
+                password,
+                page ?: 0,
+                size ?: 15,
                 start ?: LocalDateTime.of(
                     1970,
                     1,
                     1,
                     0,
                     0,
-                    0
+                    0,
                 ),
-                (end ?: LocalDateTime.now().withSecond(59))
-            )
+                (end ?: LocalDateTime.now().withSecond(59)),
+            ),
         )
     }
 }

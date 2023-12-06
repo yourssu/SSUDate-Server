@@ -17,5 +17,5 @@ class Auth(
     @field:Column(length = 10, unique = true)
     val code: String,
 
-    var ticket: Int
+    var ticket: Int,
 )

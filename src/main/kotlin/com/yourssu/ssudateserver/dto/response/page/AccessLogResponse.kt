@@ -10,5 +10,5 @@ class AccessLogResponse(
     val method: String,
     val requestBody: String?,
     val responseBody: String?,
-    val createdAt: LocalDateTime
+    val createdAt: LocalDateTime,
 )

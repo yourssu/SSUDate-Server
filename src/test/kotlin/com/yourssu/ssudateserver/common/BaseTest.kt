@@ -44,8 +44,8 @@ class BaseTest {
             authRepository.save(
                 Auth(
                     code = "test$code",
-                    ticket = 1
-                )
+                    ticket = 1,
+                ),
             )
             code++
         }
@@ -79,7 +79,7 @@ class BaseTest {
                 contact = "Contact${it + 1}",
                 weight = it % 2,
                 createdAt = currentDateTime.plusSeconds(it.toLong()),
-                gender = gender
+                gender = gender,
             )
             userList.add(user)
 //            println("${user.animals} ${user.createdAt} ${user.weight} ${user.mbti} ${user.gender}")

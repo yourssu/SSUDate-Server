@@ -13,7 +13,7 @@ class CustomServletWrappingFilter : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        chain: FilterChain
+        chain: FilterChain,
     ) {
         val wrappingRequest = ContentCachingRequestWrapper(request)
         val wrappingResponse = ContentCachingResponseWrapper(response)

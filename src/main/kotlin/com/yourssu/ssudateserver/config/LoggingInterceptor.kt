@@ -15,14 +15,14 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class LoggingInterceptor(
     private val objectMapper: ObjectMapper,
-    private val accessLogRepository: AccessLogRepository
+    private val accessLogRepository: AccessLogRepository,
 ) : HandlerInterceptor {
     @Throws(Exception::class)
     override fun afterCompletion(
         request: HttpServletRequest,
         response: HttpServletResponse,
         handler: Any,
-        @Nullable ex: java.lang.Exception?
+        @Nullable ex: java.lang.Exception?,
     ) {
         val clientIP = getClientIp(request)
         val clientOS = getClientOS(request)
@@ -35,7 +35,7 @@ class LoggingInterceptor(
             "/swagger-ui",
             "/webjars",
             "/swagger",
-            "/favicon"
+            "/favicon",
         )
         if (!excludedURIs.any { request.requestURI.startsWith(it) }) {
             accessLogRepository.save(
@@ -46,8 +46,8 @@ class LoggingInterceptor(
                     method = request.method,
                     requestBody = objectMapper.readTree(cachingRequest.contentAsByteArray).toString(),
                     responseBody = objectMapper.readTree(cachingResponse.contentAsByteArray).toString(),
-                    createdAt = LocalDateTime.now()
-                )
+                    createdAt = LocalDateTime.now(),
+                ),
             )
         }
     }

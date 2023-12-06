@@ -22,7 +22,7 @@ import java.time.LocalDateTime
 @Transactional
 class SSUDateService(
     private val authRepository: AuthRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
     fun auth(code: String): AuthResponseDto {
         val auth =
@@ -40,7 +40,7 @@ class SSUDateService(
         mbti: MBTI,
         introduce: String,
         contact: String,
-        gender: Gender
+        gender: Gender,
     ): RegisterResponseDto {
         val auth =
             authRepository.findByCode(code) ?: throw CodeNotFoundException("code를 찾을 수 없습니다.")
@@ -58,8 +58,8 @@ class SSUDateService(
                 introduction = introduce,
                 contact = contact,
                 gender = gender,
-                createdAt = LocalDateTime.now()
-            )
+                createdAt = LocalDateTime.now(),
+            ),
         )
         auth.ticket = auth.ticket - 1
 
@@ -71,14 +71,13 @@ class SSUDateService(
             mbti,
             introduce,
             contact,
-            gender
+            gender,
         )
     }
 
     fun recentSearch(): List<SearchResponseDto> {
         return userRepository.findTop15ByOrderByCreatedAtDescIdDesc()
-            .map {
-                user ->
+            .map { user ->
                 SearchResponseDto(
                     animals = user.animals,
                     nickName = user.nickName,
@@ -92,8 +91,7 @@ class SSUDateService(
     fun search(gender: Gender, animals: Animals): List<SearchResponseDto> {
         return if (animals == Animals.ALL) {
             userRepository.getRandomUserWithGender(gender.toString())
-                .map {
-                    user ->
+                .map { user ->
                     SearchResponseDto(
                         animals = user.animals,
                         nickName = user.nickName,
@@ -104,8 +102,7 @@ class SSUDateService(
                 }
         } else {
             userRepository.getRandomUserWithGenderAndAnimals(gender.toString(), animals.toString())
-                .map {
-                    user ->
+                .map { user ->
                     SearchResponseDto(
                         animals = user.animals,
                         nickName = user.nickName,

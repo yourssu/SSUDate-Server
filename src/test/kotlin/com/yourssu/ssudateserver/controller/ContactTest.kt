@@ -12,7 +12,7 @@ class ContactTest : BaseTest() {
     fun contactTest() {
         val requestDto = ContactRequestDto(
             code = validCode,
-            nickName = "testNick1"
+            nickName = "testNick1",
         )
         val test = mockMvc.post("/contact") {
             contentType = MediaType.APPLICATION_JSON
@@ -30,11 +30,12 @@ class ContactTest : BaseTest() {
         Assertions.assertThat(authRepository.findByCode("test100000")!!.ticket).isEqualTo(0)
         Assertions.assertThat(userRepository.findByNickName("testNick1")!!.weight).isEqualTo(1)
     }
+
     @Test
     fun contactTestFailCodeNotFound() {
         val requestDto = ContactRequestDto(
             code = invalidCode,
-            nickName = "testNick1"
+            nickName = "testNick1",
         )
         val test = mockMvc.post("/contact") {
             contentType = MediaType.APPLICATION_JSON
@@ -53,7 +54,7 @@ class ContactTest : BaseTest() {
     fun contactTestFailInvalidCodeLengthUnder10() {
         val requestDto = ContactRequestDto(
             code = invalidCodeUnder10,
-            nickName = "testNick1"
+            nickName = "testNick1",
         )
         val test = mockMvc.post("/contact") {
             contentType = MediaType.APPLICATION_JSON
@@ -72,7 +73,7 @@ class ContactTest : BaseTest() {
     fun contactTestFailInvalidCodeLengthOver10() {
         val requestDto = ContactRequestDto(
             code = invalidCodeOver10,
-            nickName = "testNick1"
+            nickName = "testNick1",
         )
         val test = mockMvc.post("/contact") {
             contentType = MediaType.APPLICATION_JSON
@@ -91,7 +92,7 @@ class ContactTest : BaseTest() {
     fun contactTestFailNotFoundNickName() {
         val requestDto = ContactRequestDto(
             code = validCode,
-            nickName = "aaaaa"
+            nickName = "aaaaa",
         )
         val test = mockMvc.post("/contact") {
             contentType = MediaType.APPLICATION_JSON
@@ -110,7 +111,7 @@ class ContactTest : BaseTest() {
     fun contactTestFailUnderZeroTicket() {
         val requestDto = ContactRequestDto(
             code = validCode,
-            nickName = "testNick1"
+            nickName = "testNick1",
         )
         mockMvc.post("/contact") {
             contentType = MediaType.APPLICATION_JSON

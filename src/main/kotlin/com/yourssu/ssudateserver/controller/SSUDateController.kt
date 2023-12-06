@@ -24,12 +24,18 @@ import javax.validation.Valid
 @RestController
 class SSUDateController(private val ssuDateService: SSUDateService) {
     @PostMapping("/auth")
-    fun auth(@Valid @RequestBody authRequestDto: AuthRequestDto): AuthResponseDto {
+    fun auth(
+        @Valid @RequestBody
+        authRequestDto: AuthRequestDto,
+    ): AuthResponseDto {
         return ssuDateService.auth(authRequestDto.code)
     }
 
     @PostMapping("/register/male")
-    fun registerMale(@Valid @RequestBody registerRequestDto: RegisterMaleRequestDto): RegisterResponseDto {
+    fun registerMale(
+        @Valid @RequestBody
+        registerRequestDto: RegisterMaleRequestDto,
+    ): RegisterResponseDto {
         if (registerRequestDto.animals == MaleAnimals.ALL) {
             throw AllCanNotRegisterException("ALL은 등록불가능 합니다.")
         }
@@ -41,12 +47,15 @@ class SSUDateController(private val ssuDateService: SSUDateService) {
             registerRequestDto.mbti,
             registerRequestDto.introduce,
             registerRequestDto.contact,
-            Gender.MALE
+            Gender.MALE,
         )
     }
 
     @PostMapping("/register/female")
-    fun registerFemale(@Valid @RequestBody registerRequestDto: RegisterFemaleRequestDto): RegisterResponseDto {
+    fun registerFemale(
+        @Valid @RequestBody
+        registerRequestDto: RegisterFemaleRequestDto,
+    ): RegisterResponseDto {
         if (registerRequestDto.animals == FemaleAnimals.ALL) {
             throw AllCanNotRegisterException("ALL은 등록불가능 합니다.")
         }
@@ -58,7 +67,7 @@ class SSUDateController(private val ssuDateService: SSUDateService) {
             registerRequestDto.mbti,
             registerRequestDto.introduce,
             registerRequestDto.contact,
-            Gender.FEMALE
+            Gender.FEMALE,
         )
     }
 
@@ -82,7 +91,10 @@ class SSUDateController(private val ssuDateService: SSUDateService) {
     }
 
     @PostMapping("/contact")
-    fun getContact(@Valid @RequestBody contactRequestDto: ContactRequestDto): ContactResponseDto {
+    fun getContact(
+        @Valid @RequestBody
+        contactRequestDto: ContactRequestDto,
+    ): ContactResponseDto {
         return ssuDateService.contact(contactRequestDto.code, contactRequestDto.nickName)
     }
 }

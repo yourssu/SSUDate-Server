@@ -6,12 +6,12 @@ class PageInfo<T>(
     val size: Int,
     val totalElements: Long,
     val totalPages: Int,
-    val number: Int
+    val number: Int,
 ) {
     constructor(page: Page<T>) : this(
         size = page.size,
         totalElements = page.totalElements,
         totalPages = page.totalPages,
-        number = page.number
+        number = page.number,
     )
 }

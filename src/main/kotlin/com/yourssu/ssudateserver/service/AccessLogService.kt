@@ -12,7 +12,13 @@ import java.time.LocalDateTime
 
 @Service
 class AccessLogService(private val accessLogRepository: AccessLogRepository) {
-    fun getAccessLog(password: String, page: Int, size: Int, start: LocalDateTime, end: LocalDateTime): Page<AccessLog> {
+    fun getAccessLog(
+        password: String,
+        page: Int,
+        size: Int,
+        start: LocalDateTime,
+        end: LocalDateTime,
+    ): Page<AccessLog> {
         if (password != "front-end") {
             throw InvalidPasswordException("비밀번호 에러입니다.")
         }

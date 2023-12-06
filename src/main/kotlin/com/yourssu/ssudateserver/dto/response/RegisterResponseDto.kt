@@ -12,5 +12,5 @@ class RegisterResponseDto(
     val mbti: MBTI,
     val introduce: String,
     val contact: String,
-    val gender: Gender
+    val gender: Gender,
 )

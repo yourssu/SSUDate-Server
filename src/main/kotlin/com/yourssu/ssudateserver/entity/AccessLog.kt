@@ -33,5 +33,5 @@ class AccessLog(
     val responseBody: String?,
 
     @Column(name = "created_at")
-    val createdAt: LocalDateTime
+    val createdAt: LocalDateTime,
 )
