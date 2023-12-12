@@ -13,7 +13,6 @@ import com.yourssu.ssudateserver.enums.MaleAnimals
 import com.yourssu.ssudateserver.exception.logic.AllCanNotRegisterException
 import com.yourssu.ssudateserver.service.SSUDateService
 import org.springframework.web.bind.annotation.*
-import javax.servlet.http.HttpServletResponse
 import javax.validation.Valid
 
 @RestController

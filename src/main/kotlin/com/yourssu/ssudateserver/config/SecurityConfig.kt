@@ -27,7 +27,6 @@ import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
@@ -119,6 +118,4 @@ class SecurityConfig(
             .encode(StandardCharsets.UTF_8)
             .toUriString()
     }
-
-
 }

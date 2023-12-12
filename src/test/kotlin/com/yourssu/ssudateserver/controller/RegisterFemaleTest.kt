@@ -45,7 +45,6 @@ class RegisterFemaleTest : BaseTest() {
         Assertions.assertThat(userRepository.findByNickName("NICKNICK")!!.weight).isEqualTo(0)
     }
 
-
     @Test
     fun registerFemaleTestFailAnimalsAll() {
         val requestDto = RegisterFemaleRequestDto(
@@ -93,5 +92,4 @@ class RegisterFemaleTest : BaseTest() {
             print()
         }
     }
-
 }

@@ -6,4 +6,3 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface RefreshTokenRepository : CrudRepository<RefreshToken, String>
-

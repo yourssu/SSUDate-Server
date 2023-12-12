@@ -1,6 +1,5 @@
 package com.yourssu.ssudateserver.dto.request
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.yourssu.ssudateserver.enums.FemaleAnimals
 import com.yourssu.ssudateserver.enums.MBTI
 import javax.validation.constraints.Size

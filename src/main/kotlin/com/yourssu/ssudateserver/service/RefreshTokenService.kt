@@ -5,7 +5,6 @@ import com.yourssu.ssudateserver.repository.RefreshTokenRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-
 @Service
 @Transactional
 class RefreshTokenService(private val repository: RefreshTokenRepository) {
@@ -14,7 +13,7 @@ class RefreshTokenService(private val repository: RefreshTokenRepository) {
         repository.save(RefreshToken(oauthName, refreshToken))
     }
 
-    fun findRefreshToken(oauthName: String) : RefreshToken?{
+    fun findRefreshToken(oauthName: String): RefreshToken? {
         return repository.findById(oauthName).orElse(null)
     }
 
