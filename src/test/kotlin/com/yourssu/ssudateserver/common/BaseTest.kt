@@ -3,11 +3,7 @@ package com.yourssu.ssudateserver.common
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.yourssu.ssudateserver.entity.Auth
 import com.yourssu.ssudateserver.entity.User
-import com.yourssu.ssudateserver.enums.Animals
-import com.yourssu.ssudateserver.enums.FemaleAnimals
-import com.yourssu.ssudateserver.enums.Gender
-import com.yourssu.ssudateserver.enums.MBTI
-import com.yourssu.ssudateserver.enums.MaleAnimals
+import com.yourssu.ssudateserver.enums.*
 import com.yourssu.ssudateserver.repository.AuthRepository
 import com.yourssu.ssudateserver.repository.UserRepository
 import org.junit.jupiter.api.AfterEach
@@ -15,11 +11,14 @@ import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Profile
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import java.time.LocalDateTime
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 class BaseTest {
     @Autowired
     protected lateinit var mockMvc: MockMvc
@@ -75,11 +74,13 @@ class BaseTest {
                 animals = animal,
                 mbti = mbti,
                 nickName = "testNick${it + 1}",
+                oauthName = "oauthName${it + 1}",
                 introduction = "Introduction${it + 1}",
                 contact = "Contact${it + 1}",
                 weight = it % 2,
                 createdAt = currentDateTime.plusSeconds(it.toLong()),
                 gender = gender,
+                role = RoleType.USER,
             )
             userList.add(user)
 //            println("${user.animals} ${user.createdAt} ${user.weight} ${user.mbti} ${user.gender}")

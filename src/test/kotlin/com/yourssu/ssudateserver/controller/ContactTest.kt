@@ -5,10 +5,15 @@ import com.yourssu.ssudateserver.dto.request.ContactRequestDto
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.post
 
+@ActiveProfiles("test")
 class ContactTest : BaseTest() {
+
     @Test
+    @WithMockUser
     fun contactTest() {
         val requestDto = ContactRequestDto(
             code = validCode,
@@ -32,6 +37,7 @@ class ContactTest : BaseTest() {
     }
 
     @Test
+    @WithMockUser
     fun contactTestFailCodeNotFound() {
         val requestDto = ContactRequestDto(
             code = invalidCode,
@@ -51,6 +57,7 @@ class ContactTest : BaseTest() {
     }
 
     @Test
+    @WithMockUser
     fun contactTestFailInvalidCodeLengthUnder10() {
         val requestDto = ContactRequestDto(
             code = invalidCodeUnder10,
@@ -70,6 +77,7 @@ class ContactTest : BaseTest() {
     }
 
     @Test
+    @WithMockUser
     fun contactTestFailInvalidCodeLengthOver10() {
         val requestDto = ContactRequestDto(
             code = invalidCodeOver10,
@@ -89,6 +97,7 @@ class ContactTest : BaseTest() {
     }
 
     @Test
+    @WithMockUser
     fun contactTestFailNotFoundNickName() {
         val requestDto = ContactRequestDto(
             code = validCode,
@@ -108,6 +117,7 @@ class ContactTest : BaseTest() {
     }
 
     @Test
+    @WithMockUser
     fun contactTestFailUnderZeroTicket() {
         val requestDto = ContactRequestDto(
             code = validCode,

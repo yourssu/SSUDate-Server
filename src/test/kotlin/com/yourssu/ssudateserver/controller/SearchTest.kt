@@ -2,10 +2,15 @@ package com.yourssu.ssudateserver.controller
 
 import com.yourssu.ssudateserver.common.BaseTest
 import org.junit.jupiter.api.Test
+import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.get
 
+@ActiveProfiles("test")
 class SearchTest : BaseTest() {
+
     @Test
+    @WithMockUser
     fun searchMaleAllTest() {
         val test = mockMvc.get("/search/male/ALL")
         test.andExpect {
@@ -21,6 +26,7 @@ class SearchTest : BaseTest() {
     }
 
     @Test
+    @WithMockUser
     fun searchFemaleAllTest() {
         val test = mockMvc.get("/search/female/ALL")
         test.andExpect {
@@ -36,6 +42,7 @@ class SearchTest : BaseTest() {
     }
 
     @Test
+    @WithMockUser
     fun searchDOGMaleTest() {
         val test = mockMvc.get("/search/male/DOG")
         test.andExpect {
@@ -52,6 +59,7 @@ class SearchTest : BaseTest() {
     }
 
     @Test
+    @WithMockUser
     fun searchDOGFemaleTest() {
         val test = mockMvc.get("/search/female/DOG")
         test.andExpect {
@@ -68,6 +76,7 @@ class SearchTest : BaseTest() {
     }
 
     @Test
+    @WithMockUser
     fun searchRecentTest() {
         val test = mockMvc.get("/search/recent")
         var count = 0
