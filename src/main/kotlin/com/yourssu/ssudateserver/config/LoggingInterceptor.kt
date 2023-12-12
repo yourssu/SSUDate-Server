@@ -36,6 +36,7 @@ class LoggingInterceptor(
             "/webjars",
             "/swagger",
             "/favicon",
+            "/oauth"
         )
         if (!excludedURIs.any { request.requestURI.startsWith(it) }) {
             accessLogRepository.save(

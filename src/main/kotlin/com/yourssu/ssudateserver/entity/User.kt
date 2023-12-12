@@ -3,6 +3,7 @@ package com.yourssu.ssudateserver.entity
 import com.yourssu.ssudateserver.enums.Animals
 import com.yourssu.ssudateserver.enums.Gender
 import com.yourssu.ssudateserver.enums.MBTI
+import com.yourssu.ssudateserver.enums.RoleType
 import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -31,6 +32,9 @@ class User(
     @field:Column(name = "nick_name", unique = true)
     val nickName: String,
 
+    @field:Column(name = "o_auth_name", unique = true)
+    val oauthName: String,
+
     @field:Column(name = "introduction", length = 100)
     val introduction: String,
 
@@ -43,6 +47,10 @@ class User(
     @field:Column(name = "gender")
     @field:Enumerated(EnumType.STRING)
     val gender: Gender,
+
+    @field:Column(name = "role")
+    @field:Enumerated(EnumType.STRING)
+    val role: RoleType,
 
     @field:Column(name = "created_at")
     val createdAt: LocalDateTime,

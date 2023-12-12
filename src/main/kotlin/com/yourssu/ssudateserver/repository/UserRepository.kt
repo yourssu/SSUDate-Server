@@ -10,8 +10,17 @@ interface UserRepository : JpaRepository<User, Long> {
 
     @Query(value = "SELECT * FROM users WHERE gender= :gender ORDER BY rand() LIMIT 16", nativeQuery = true)
     fun getRandomUserWithGender(@Param("gender") gender: String): List<User>
-    @Query(value = "SELECT * FROM users WHERE gender= :gender and animals= :animals ORDER BY rand() LIMIT 16", nativeQuery = true)
-    fun getRandomUserWithGenderAndAnimals(@Param("gender") gender: String, @Param("animals") animals: String): List<User>
+
+    @Query(
+        value = "SELECT * FROM users WHERE gender= :gender and animals= :animals ORDER BY rand() LIMIT 16",
+        nativeQuery = true,
+    )
+    fun getRandomUserWithGenderAndAnimals(
+        @Param("gender") gender: String,
+        @Param("animals") animals: String,
+    ): List<User>
+
+    fun findUserByOauthName(oauthName: String): User?
 
     fun findTop15ByOrderByCreatedAtDescIdDesc(): List<User>
 }
