@@ -2,7 +2,11 @@ package com.yourssu.ssudateserver.jwt.component
 
 import com.yourssu.ssudateserver.jwt.component.JwtKeyProvider.Companion.getKey
 import com.yourssu.ssudateserver.jwt.exception.AuthenticateException
-import io.jsonwebtoken.*
+import io.jsonwebtoken.Claims
+import io.jsonwebtoken.ExpiredJwtException
+import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.MalformedJwtException
+import io.jsonwebtoken.UnsupportedJwtException
 import io.jsonwebtoken.security.SignatureException
 import org.springframework.stereotype.Component
 

@@ -4,7 +4,7 @@ import com.yourssu.ssudateserver.jwt.component.JwtKeyProvider.Companion.getKey
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.stereotype.Component
-import java.util.*
+import java.util.Date
 
 @Component
 class JwtGenerator(

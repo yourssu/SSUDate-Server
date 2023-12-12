@@ -3,7 +3,12 @@ package com.yourssu.ssudateserver.common
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.yourssu.ssudateserver.entity.Auth
 import com.yourssu.ssudateserver.entity.User
-import com.yourssu.ssudateserver.enums.*
+import com.yourssu.ssudateserver.enums.Animals
+import com.yourssu.ssudateserver.enums.FemaleAnimals
+import com.yourssu.ssudateserver.enums.Gender
+import com.yourssu.ssudateserver.enums.MBTI
+import com.yourssu.ssudateserver.enums.MaleAnimals
+import com.yourssu.ssudateserver.enums.RoleType
 import com.yourssu.ssudateserver.repository.AuthRepository
 import com.yourssu.ssudateserver.repository.UserRepository
 import org.junit.jupiter.api.AfterEach
