@@ -6,7 +6,6 @@ import com.yourssu.ssudateserver.enums.MBTI
 
 class RegisterResponseDto(
     val id: Long,
-    val code: String,
     val animals: Animals,
     val nickName: String,
     val mbti: MBTI,

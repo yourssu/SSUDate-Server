@@ -1,12 +1,11 @@
 package com.yourssu.ssudateserver.dto.request
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.yourssu.ssudateserver.enums.FemaleAnimals
 import com.yourssu.ssudateserver.enums.MBTI
 import javax.validation.constraints.Size
 
 class RegisterFemaleRequestDto(
-    @field:Size(message = "인증코드는 10자리 입니다.", min = 10, max = 10)
-    val code: String,
     val animals: FemaleAnimals,
     @field:Size(message = "닉네임은 최대 9글자 입니다.", min = 1, max = 9)
     val nickName: String,
