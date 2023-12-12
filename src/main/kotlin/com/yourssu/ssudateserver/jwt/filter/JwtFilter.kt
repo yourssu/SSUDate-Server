@@ -1,7 +1,7 @@
 package com.yourssu.ssudateserver.jwt.filter
 
-import com.yourssu.ssudateserver.jwt.exception.AuthenticateException
 import com.yourssu.ssudateserver.jwt.component.JwtProvider
+import com.yourssu.ssudateserver.jwt.exception.AuthenticateException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.OncePerRequestFilter
 import javax.servlet.FilterChain
