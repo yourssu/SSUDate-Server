@@ -47,7 +47,7 @@ class SecurityConfig(
         .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
         .authorizeRequests {
             it
-                .antMatchers("/oauth2/**", "/register/**").permitAll()
+                .antMatchers("/register/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(JwtConfig(jwtProvider, authenticationEntryPoint))
