@@ -10,4 +10,5 @@ class SearchResponseDto(
     val mbti: MBTI,
     val introduce: String,
     val gender: Gender,
+    var weight: Int,
 )

@@ -1,66 +1,24 @@
 package com.yourssu.ssudateserver.service
 
 import com.yourssu.ssudateserver.dto.response.ContactResponseDto
-import com.yourssu.ssudateserver.dto.response.RegisterResponseDto
+import com.yourssu.ssudateserver.dto.response.SearchContactResponseDto
 import com.yourssu.ssudateserver.dto.response.SearchResponseDto
-import com.yourssu.ssudateserver.entity.User
 import com.yourssu.ssudateserver.enums.Animals
 import com.yourssu.ssudateserver.enums.Gender
-import com.yourssu.ssudateserver.enums.MBTI
-import com.yourssu.ssudateserver.enums.RoleType
-import com.yourssu.ssudateserver.exception.logic.CodeNotFoundException
-import com.yourssu.ssudateserver.exception.logic.NickNameDuplicateException
-import com.yourssu.ssudateserver.exception.logic.UnderZeroTicketException
 import com.yourssu.ssudateserver.exception.logic.UserNotFoundException
-import com.yourssu.ssudateserver.repository.AuthRepository
+import com.yourssu.ssudateserver.repository.FollowRepository
 import com.yourssu.ssudateserver.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDateTime
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 class SSUDateService(
-    private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
+    private val followRepository: FollowRepository,
 ) {
-    fun register(
-        animals: Animals,
-        nickName: String,
-        oauthName: String,
-        mbti: MBTI,
-        introduce: String,
-        contact: String,
-        gender: Gender,
-    ): RegisterResponseDto {
-        if (userRepository.findByNickName(nickName) != null) {
-            throw NickNameDuplicateException("해당 닉네임은 이미 존재합니다.")
-        }
-        val saveUser = userRepository.save(
-            User(
-                animals = animals,
-                mbti = mbti,
-                nickName = nickName,
-                oauthName = oauthName,
-                introduction = introduce,
-                contact = contact,
-                gender = gender,
-                role = RoleType.USER,
-                createdAt = LocalDateTime.now(),
-            ),
-        )
 
-        return RegisterResponseDto(
-            saveUser.id!!,
-            animals,
-            nickName,
-            mbti,
-            introduce,
-            contact,
-            gender,
-        )
-    }
-
+    @Transactional
     fun recentSearch(): List<SearchResponseDto> {
         return userRepository.findTop15ByOrderByCreatedAtDescIdDesc()
             .map { user ->
@@ -70,6 +28,7 @@ class SSUDateService(
                     mbti = user.mbti,
                     introduce = user.introduction,
                     gender = user.gender,
+                    weight = user.weight,
                 )
             }
     }
@@ -84,6 +43,7 @@ class SSUDateService(
                         mbti = user.mbti,
                         introduce = user.introduction,
                         gender = user.gender,
+                        weight = user.weight,
                     )
                 }
         } else {
@@ -95,20 +55,47 @@ class SSUDateService(
                         mbti = user.mbti,
                         introduce = user.introduction,
                         gender = user.gender,
+                        weight = user.weight,
                     )
                 }
         }
     }
 
-    fun contact(code: String, nickName: String): ContactResponseDto {
-        val auth =
-            authRepository.findByCode(code) ?: throw CodeNotFoundException("code를 찾을 수 없습니다.")
-        if (auth.ticket <= 0) {
-            throw UnderZeroTicketException("이용권이 필요한 기능입니다. 이용권 구매 후 사용해주세요!")
+    fun searchContact(oauthName: String): List<SearchContactResponseDto> {
+        val user =
+            userRepository.findByOauthName(oauthName) ?: throw UserNotFoundException("해당 oauthName인 유저가 없습니다.")
+
+        userRepository.findAll().forEach {
+            println(it.id)
         }
-        val user = userRepository.findByNickName(nickName) ?: throw UserNotFoundException("NickName인 유저가 없습니다.")
-        auth.ticket--
-        user.weight++
-        return ContactResponseDto(user.nickName, user.contact)
+
+        val toUserIdList: List<Long> = followRepository.findAllByFromUserId(user.id!!).map { it.toUserId }
+
+        return userRepository.findAllByIdIn(toUserIdList)
+            .map {
+                SearchContactResponseDto(
+                    animals = it.animals,
+                    nickName = it.nickName,
+                    mbti = it.mbti,
+                    introduce = it.introduction,
+                    gender = it.gender,
+                    contact = it.contact,
+                    weight = it.weight,
+                )
+            }
+    }
+
+    @Transactional
+    fun contact(oauthName: String, nickName: String): ContactResponseDto {
+        val fromUser =
+            userRepository.findByOauthName(oauthName) ?: throw UserNotFoundException("해당 oauthName인 유저가 없습니다.")
+        val toUser = userRepository.findByNickName(nickName) ?: throw UserNotFoundException("nickName인 유저가 없습니다.")
+
+        followRepository.save(fromUser.contactTo(toUser))
+
+        return ContactResponseDto(
+            nickName = toUser.nickName,
+            contact = toUser.contact,
+        )
     }
 }

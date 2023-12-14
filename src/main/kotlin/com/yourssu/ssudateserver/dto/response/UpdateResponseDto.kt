@@ -4,7 +4,7 @@ import com.yourssu.ssudateserver.enums.Animals
 import com.yourssu.ssudateserver.enums.Gender
 import com.yourssu.ssudateserver.enums.MBTI
 
-class RegisterResponseDto(
+data class UpdateResponseDto(
     val id: Long,
     val animals: Animals,
     val nickName: String,
@@ -13,6 +13,4 @@ class RegisterResponseDto(
     val ticket: Int,
     val contact: String,
     val gender: Gender,
-    val accessToken: String,
-    val refreshToken: String,
 )

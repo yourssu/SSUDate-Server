@@ -20,7 +20,9 @@ interface UserRepository : JpaRepository<User, Long> {
         @Param("animals") animals: String,
     ): List<User>
 
-    fun findUserByOauthName(oauthName: String): User?
+    fun findAllByIdIn(ids: List<Long>): List<User>
+
+    fun findByOauthName(oauthName: String): User?
 
     fun findTop15ByOrderByCreatedAtDescIdDesc(): List<User>
 }
