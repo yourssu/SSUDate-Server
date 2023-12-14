@@ -14,4 +14,7 @@ spring:
       ddl-auto: create
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 
-
+jwt:
+  secret-key: test-secret-key-test-secret-key-test-secret-key
+  access-exp-time: 60000  # 1분
+  refresh-exp-time: 3600000 # 1시간

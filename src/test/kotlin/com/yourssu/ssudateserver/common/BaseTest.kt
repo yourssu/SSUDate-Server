@@ -1,7 +1,7 @@
 package com.yourssu.ssudateserver.common
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.yourssu.ssudateserver.entity.Auth
+import com.yourssu.ssudateserver.entity.Follow
 import com.yourssu.ssudateserver.entity.User
 import com.yourssu.ssudateserver.enums.Animals
 import com.yourssu.ssudateserver.enums.FemaleAnimals
@@ -9,7 +9,7 @@ import com.yourssu.ssudateserver.enums.Gender
 import com.yourssu.ssudateserver.enums.MBTI
 import com.yourssu.ssudateserver.enums.MaleAnimals
 import com.yourssu.ssudateserver.enums.RoleType
-import com.yourssu.ssudateserver.repository.AuthRepository
+import com.yourssu.ssudateserver.repository.FollowRepository
 import com.yourssu.ssudateserver.repository.UserRepository
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -18,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.web.servlet.MockMvc
 import java.time.LocalDateTime
+import java.time.LocalDateTime.now
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -29,31 +30,13 @@ class BaseTest {
     protected lateinit var objectMapper: ObjectMapper
 
     @Autowired
-    protected lateinit var authRepository: AuthRepository
-
-    @Autowired
     protected lateinit var userRepository: UserRepository
 
-    val validCode = "test100000"
-    val invalidCode = "testestest"
-    val invalidCodeUnder10 = "testest"
-    val invalidCodeOver10 = "testestestest"
-
-    fun createCode() {
-        var code = 100000
-        repeat(10) {
-            authRepository.save(
-                Auth(
-                    code = "test$code",
-                    ticket = 1,
-                ),
-            )
-            code++
-        }
-    }
+    @Autowired
+    protected lateinit var followRepository: FollowRepository
 
     //
-    fun createMockUser() {
+    private fun createMockUser() {
         val userList = mutableListOf<User>()
 
         val currentDateTime = LocalDateTime.now()
@@ -83,22 +66,31 @@ class BaseTest {
                 createdAt = currentDateTime.plusSeconds(it.toLong()),
                 gender = gender,
                 role = RoleType.USER,
+                ticket = (it + 1) % 3,
             )
             userList.add(user)
 //            println("${user.animals} ${user.createdAt} ${user.weight} ${user.mbti} ${user.gender}")
         }
-        userRepository.saveAll(userList)
+        val saveAll = userRepository.saveAll(userList)
+
+        val user = saveAll[1]
+
+        followRepository.save(
+            Follow(fromUserId = user.id!!, toUserId = user.id!! + 1L, createdAt = now())
+        )
+        followRepository.save(
+            Follow(fromUserId = user.id!!, toUserId = user.id!! + 2L, createdAt = now())
+        )
     }
 
     @BeforeEach
     fun setUp() {
-        createCode()
         createMockUser()
     }
 
     @AfterEach
     fun setDown() {
-        authRepository.deleteAll()
         userRepository.deleteAll()
+        followRepository.deleteAll()
     }
 }

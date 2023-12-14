@@ -1,6 +1,7 @@
 package com.yourssu.ssudateserver.controller
 
 import com.yourssu.ssudateserver.common.BaseTest
+import com.yourssu.ssudateserver.fixture.PrincipalFixture.Companion.setPrincipal
 import org.junit.jupiter.api.Test
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ActiveProfiles
@@ -87,6 +88,22 @@ class SearchTest : BaseTest() {
                 jsonPath("[$count].nickName") { value("testNick$i") }
                 count++
             }
+        }
+        test.andDo {
+            print()
+        }
+    }
+
+    @Test
+    fun searchContactTest() {
+        setPrincipal("oauthName2")
+
+        val test = mockMvc.get("/search/contact")
+
+        test.andExpect {
+            status { isOk() }
+            jsonPath("size()") { value(2) }
+            jsonPath("[0].contact") { exists() }
         }
         test.andDo {
             print()
