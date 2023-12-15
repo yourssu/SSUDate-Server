@@ -87,7 +87,6 @@ class BaseTest {
         )
 
         tokenService.saveTokenInfo(oauthName = "oauthName1", "refreshToken")
-
     }
 
     @BeforeEach

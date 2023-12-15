@@ -30,7 +30,6 @@ class RefreshTokenTest : BaseTest() {
                 jsonPath("accessToken") { exists() }
                 jsonPath("refreshToken") { exists() }
             }
-
     }
     @Test
     @WithMockUser
