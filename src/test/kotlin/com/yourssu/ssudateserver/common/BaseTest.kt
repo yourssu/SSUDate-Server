@@ -11,6 +11,7 @@ import com.yourssu.ssudateserver.enums.MaleAnimals
 import com.yourssu.ssudateserver.enums.RoleType
 import com.yourssu.ssudateserver.repository.FollowRepository
 import com.yourssu.ssudateserver.repository.UserRepository
+import com.yourssu.ssudateserver.service.RefreshTokenService
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,6 +35,9 @@ class BaseTest {
 
     @Autowired
     protected lateinit var followRepository: FollowRepository
+
+    @Autowired
+    lateinit var tokenService: RefreshTokenService
 
     //
     private fun createMockUser() {
@@ -81,6 +85,9 @@ class BaseTest {
         followRepository.save(
             Follow(fromUserId = user.id!!, toUserId = user.id!! + 2L, createdAt = now())
         )
+
+        tokenService.saveTokenInfo(oauthName = "oauthName1", "refreshToken")
+
     }
 
     @BeforeEach
