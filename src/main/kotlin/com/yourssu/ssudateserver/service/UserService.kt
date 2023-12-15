@@ -1,5 +1,6 @@
 package com.yourssu.ssudateserver.service
 
+import com.yourssu.ssudateserver.dto.response.RefreshTokenResponseDto
 import com.yourssu.ssudateserver.dto.response.RegisterResponseDto
 import com.yourssu.ssudateserver.dto.response.UpdateResponseDto
 import com.yourssu.ssudateserver.entity.User
@@ -7,7 +8,9 @@ import com.yourssu.ssudateserver.enums.Animals
 import com.yourssu.ssudateserver.enums.Gender
 import com.yourssu.ssudateserver.enums.MBTI
 import com.yourssu.ssudateserver.enums.RoleType
+import com.yourssu.ssudateserver.exception.logic.InvalidRefreshTokenException
 import com.yourssu.ssudateserver.exception.logic.NickNameDuplicateException
+import com.yourssu.ssudateserver.exception.logic.RefreshTokenNotFoundException
 import com.yourssu.ssudateserver.exception.logic.UserNotFoundException
 import com.yourssu.ssudateserver.jwt.component.JwtGenerator
 import com.yourssu.ssudateserver.repository.UserRepository
@@ -25,6 +28,23 @@ class UserService(
 
     fun searchUser(oauthName: String): User? {
         return userRepository.findByOauthName(oauthName)
+    }
+
+    fun refreshToken(refreshToken: String, oauthName: String): RefreshTokenResponseDto {
+        val foundedToken = refreshTokenService.findRefreshToken(oauthName)
+            ?: throw RefreshTokenNotFoundException("유저의 refreshToken이 존재하지 않습니다.")
+
+        if (refreshToken != foundedToken.refreshToken) {
+            refreshTokenService.removeRefreshToken(oauthName)
+            throw InvalidRefreshTokenException("잘못된 refreshToken입니다.")
+        }
+
+        val accessToken = jwtGenerator.generateAccessToken(oauthName)
+        val newRefreshToken = jwtGenerator.generateRefreshToken(oauthName)
+
+        refreshTokenService.saveTokenInfo(oauthName, newRefreshToken)
+
+        return RefreshTokenResponseDto(accessToken = accessToken, refreshToken = newRefreshToken)
     }
 
     @Transactional

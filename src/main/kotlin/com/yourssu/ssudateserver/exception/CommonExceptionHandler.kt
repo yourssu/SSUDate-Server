@@ -2,7 +2,9 @@ package com.yourssu.ssudateserver.exception
 
 import com.yourssu.ssudateserver.exception.logic.AllCanNotRegisterException
 import com.yourssu.ssudateserver.exception.logic.CodeNotFoundException
+import com.yourssu.ssudateserver.exception.logic.InvalidRefreshTokenException
 import com.yourssu.ssudateserver.exception.logic.NickNameDuplicateException
+import com.yourssu.ssudateserver.exception.logic.RefreshTokenNotFoundException
 import com.yourssu.ssudateserver.exception.logic.UnderZeroTicketException
 import com.yourssu.ssudateserver.exception.logic.UserNotFoundException
 import org.springframework.http.HttpStatus
@@ -22,7 +24,10 @@ class CommonExceptionHandler {
 
     @ExceptionHandler(UnderZeroTicketException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun handleUnderZeroTicketException(exception: UnderZeroTicketException, request: HttpServletRequest): ErrorResponse {
+    fun handleUnderZeroTicketException(
+        exception: UnderZeroTicketException,
+        request: HttpServletRequest,
+    ): ErrorResponse {
         return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)
     }
 
@@ -34,13 +39,37 @@ class CommonExceptionHandler {
 
     @ExceptionHandler(AllCanNotRegisterException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun handleAllCanNotRegisterException(exception: AllCanNotRegisterException, request: HttpServletRequest): ErrorResponse {
+    fun handleAllCanNotRegisterException(
+        exception: AllCanNotRegisterException,
+        request: HttpServletRequest,
+    ): ErrorResponse {
         return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)
     }
 
     @ExceptionHandler(NickNameDuplicateException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun handleNickNameDuplicateException(exception: NickNameDuplicateException, request: HttpServletRequest): ErrorResponse {
+    fun handleNickNameDuplicateException(
+        exception: NickNameDuplicateException,
+        request: HttpServletRequest,
+    ): ErrorResponse {
+        return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)
+    }
+
+    @ExceptionHandler(RefreshTokenNotFoundException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleRefreshTokenNotFoundException(
+        exception: RefreshTokenNotFoundException,
+        request: HttpServletRequest,
+    ): ErrorResponse {
+        return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)
+    }
+
+    @ExceptionHandler(InvalidRefreshTokenException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleInvalidRefreshTokenException(
+        exception: InvalidRefreshTokenException,
+        request: HttpServletRequest,
+    ): ErrorResponse {
         return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)
     }
 }

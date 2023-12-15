@@ -1,9 +1,11 @@
 package com.yourssu.ssudateserver.controller
 
+import com.yourssu.ssudateserver.dto.request.RefreshTokenRequestDto
 import com.yourssu.ssudateserver.dto.request.RegisterFemaleRequestDto
 import com.yourssu.ssudateserver.dto.request.RegisterMaleRequestDto
 import com.yourssu.ssudateserver.dto.request.UpdateFemaleRequestDto
 import com.yourssu.ssudateserver.dto.request.UpdateMaleRequestDto
+import com.yourssu.ssudateserver.dto.response.RefreshTokenResponseDto
 import com.yourssu.ssudateserver.dto.response.RegisterResponseDto
 import com.yourssu.ssudateserver.dto.response.UpdateResponseDto
 import com.yourssu.ssudateserver.dto.security.UserPrincipal
@@ -102,5 +104,13 @@ class UserController(
             updateRequestDto.contact,
             userPrincipal.name
         )
+    }
+
+    @PostMapping("/refresh")
+    fun refreshToken(
+        @RequestBody refreshTokenRequestDto: RefreshTokenRequestDto,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+    ): RefreshTokenResponseDto {
+        return userService.refreshToken(refreshTokenRequestDto.refreshToken, userPrincipal.name)
     }
 }
