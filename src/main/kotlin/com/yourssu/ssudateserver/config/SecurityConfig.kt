@@ -47,7 +47,7 @@ class SecurityConfig(
         .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
         .authorizeRequests {
             it
-                .antMatchers("/register/**").permitAll()
+                .antMatchers("/register/**", "/v2/api-docs", "/v3/**", "/swagger-resources/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(JwtConfig(jwtProvider, authenticationEntryPoint))
