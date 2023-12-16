@@ -2,9 +2,11 @@ package com.yourssu.ssudateserver.exception
 
 import com.yourssu.ssudateserver.exception.logic.AllCanNotRegisterException
 import com.yourssu.ssudateserver.exception.logic.CodeNotFoundException
+import com.yourssu.ssudateserver.exception.logic.DuplicateCodeException
 import com.yourssu.ssudateserver.exception.logic.InvalidRefreshTokenException
 import com.yourssu.ssudateserver.exception.logic.NickNameDuplicateException
 import com.yourssu.ssudateserver.exception.logic.RefreshTokenNotFoundException
+import com.yourssu.ssudateserver.exception.logic.SelfContactException
 import com.yourssu.ssudateserver.exception.logic.UnderZeroTicketException
 import com.yourssu.ssudateserver.exception.logic.UserNotFoundException
 import org.springframework.http.HttpStatus
@@ -68,6 +70,24 @@ class CommonExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun handleInvalidRefreshTokenException(
         exception: InvalidRefreshTokenException,
+        request: HttpServletRequest,
+    ): ErrorResponse {
+        return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)
+    }
+
+    @ExceptionHandler(SelfContactException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleSelfContactException(
+        exception: SelfContactException,
+        request: HttpServletRequest,
+    ): ErrorResponse {
+        return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)
+    }
+
+    @ExceptionHandler(DuplicateCodeException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleDuplicateCodeException(
+        exception: DuplicateCodeException,
         request: HttpServletRequest,
     ): ErrorResponse {
         return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)

@@ -1,6 +1,7 @@
 package com.yourssu.ssudateserver.controller
 
 import com.yourssu.ssudateserver.dto.request.RefreshTokenRequestDto
+import com.yourssu.ssudateserver.dto.request.RegisterCodeRequestDto
 import com.yourssu.ssudateserver.dto.request.RegisterFemaleRequestDto
 import com.yourssu.ssudateserver.dto.request.RegisterMaleRequestDto
 import com.yourssu.ssudateserver.dto.request.UpdateFemaleRequestDto
@@ -68,6 +69,14 @@ class UserController(
             registerRequestDto.contact,
             Gender.FEMALE,
         )
+    }
+
+    @PostMapping("/register/code")
+    fun registerCode(
+        @RequestBody registerRequestDto: RegisterCodeRequestDto,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+    ): UserInfoResponseDto {
+        return userService.registerCode(friendCode = registerRequestDto.code, oauthName = userPrincipal.name)
     }
 
     @GetMapping("/users/my")

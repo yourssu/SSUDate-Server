@@ -144,10 +144,49 @@ class UserService(
             animals = updatedUser.animals,
             nickName = updatedUser.nickName,
             mbti = updatedUser.mbti,
-            introduce = updatedUser.introduction,
+            introduce = updatedUser.introduce,
             ticket = updatedUser.ticket,
             contact = updatedUser.contact,
             gender = updatedUser.gender,
+        )
+    }
+
+    @Transactional
+    fun registerCode(friendCode: String, oauthName: String): UserInfoResponseDto {
+        val user =
+            userRepository.findByOauthName(oauthName) ?: throw UserNotFoundException("해당 oauthName인 유저가 없습니다.")
+
+        val myCode = user.code
+
+        if (myCode == friendCode) {
+            throw DuplicateCodeException("내 code는 등록할 수 없습니다.")
+        }
+        codeRepository.findByFromCodeAndToCode(myCode, friendCode)?.run {
+            throw DuplicateCodeException("이미 등록한 친구 code입니다.")
+        }
+        codeRepository.findByFromCodeAndToCode(friendCode, myCode)?.run {
+            throw DuplicateCodeException("친구가 이미 당신의 code를 등록했습니다.")
+        }
+        val toUser = userRepository.findByCode(friendCode)
+            ?: throw UserNotFoundException("해당 code의 유저가 존재하지 않습니다.")
+
+        val code = user.registerCode(toUser)
+        val updatedUser = userRepository.save(user)
+        userRepository.save(toUser)
+        codeRepository.save(code)
+
+        return UserInfoResponseDto(
+            id = updatedUser.id!!,
+            animals = updatedUser.animals,
+            nickName = updatedUser.nickName,
+            mbti = updatedUser.mbti,
+            introduce = updatedUser.introduce,
+            weight = updatedUser.weight,
+            ticket = updatedUser.ticket,
+            contact = updatedUser.contact,
+            code = updatedUser.code,
+            gender = updatedUser.gender,
+            createdAt = updatedUser.createdAt,
         )
     }
 

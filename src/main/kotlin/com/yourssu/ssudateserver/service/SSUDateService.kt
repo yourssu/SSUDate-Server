@@ -89,6 +89,11 @@ class SSUDateService(
     fun contact(oauthName: String, nickName: String): ContactResponseDto {
         val fromUser =
             userRepository.findByOauthName(oauthName) ?: throw UserNotFoundException("해당 oauthName인 유저가 없습니다.")
+
+        if (fromUser.nickName == nickName) {
+            throw SelfContactException("본인의 nickName으로 Contact할 수 없습니다.")
+        }
+
         val toUser = userRepository.findByNickName(nickName) ?: throw UserNotFoundException("nickName인 유저가 없습니다.")
 
         followRepository.save(fromUser.contactTo(toUser))
