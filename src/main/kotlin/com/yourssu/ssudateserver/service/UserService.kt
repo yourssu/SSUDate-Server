@@ -3,6 +3,7 @@ package com.yourssu.ssudateserver.service
 import com.yourssu.ssudateserver.dto.response.RefreshTokenResponseDto
 import com.yourssu.ssudateserver.dto.response.RegisterResponseDto
 import com.yourssu.ssudateserver.dto.response.UpdateResponseDto
+import com.yourssu.ssudateserver.dto.response.UserInfoResponseDto
 import com.yourssu.ssudateserver.entity.User
 import com.yourssu.ssudateserver.enums.Animals
 import com.yourssu.ssudateserver.enums.Gender
@@ -28,6 +29,24 @@ class UserService(
 
     fun searchUser(oauthName: String): User? {
         return userRepository.findByOauthName(oauthName)
+    }
+
+    fun getMyInfo(oauthName: String): UserInfoResponseDto {
+        val user =
+            userRepository.findByOauthName(oauthName) ?: throw UserNotFoundException("해당 oauthName인 유저가 없습니다.")
+
+        return UserInfoResponseDto(
+            id = user.id!!,
+            animals = user.animals,
+            mbti = user.mbti,
+            nickName = user.nickName,
+            introduction = user.introduction,
+            contact = user.contact,
+            weight = user.weight,
+            ticket = user.ticket,
+            gender = user.gender,
+            createdAt = user.createdAt,
+        )
     }
 
     fun refreshToken(refreshToken: String, oauthName: String): RefreshTokenResponseDto {

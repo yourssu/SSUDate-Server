@@ -8,6 +8,7 @@ import com.yourssu.ssudateserver.dto.request.UpdateMaleRequestDto
 import com.yourssu.ssudateserver.dto.response.RefreshTokenResponseDto
 import com.yourssu.ssudateserver.dto.response.RegisterResponseDto
 import com.yourssu.ssudateserver.dto.response.UpdateResponseDto
+import com.yourssu.ssudateserver.dto.response.UserInfoResponseDto
 import com.yourssu.ssudateserver.dto.security.UserPrincipal
 import com.yourssu.ssudateserver.enums.Animals
 import com.yourssu.ssudateserver.enums.FemaleAnimals
@@ -16,6 +17,7 @@ import com.yourssu.ssudateserver.enums.MaleAnimals
 import com.yourssu.ssudateserver.exception.logic.AllCanNotRegisterException
 import com.yourssu.ssudateserver.service.UserService
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -66,6 +68,11 @@ class UserController(
             registerRequestDto.contact,
             Gender.FEMALE,
         )
+    }
+
+    @GetMapping("/users/my")
+    fun getMyInfo(@AuthenticationPrincipal userPrincipal: UserPrincipal): UserInfoResponseDto {
+        return userService.getMyInfo(oauthName = userPrincipal.name)
     }
 
     @PatchMapping("/users/my/male")
