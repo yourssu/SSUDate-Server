@@ -9,6 +9,7 @@ import com.yourssu.ssudateserver.service.RefreshTokenService
 import com.yourssu.ssudateserver.service.UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -32,6 +33,7 @@ import javax.servlet.http.HttpServletResponse
 class SecurityConfig(
     private val jwtProvider: JwtProvider,
     private val jwtGenerator: JwtGenerator,
+    private val userService: UserService,
     private val authenticationEntryPoint: AuthenticationEntryPoint,
     private val refreshTokenService: RefreshTokenService,
 ) {
@@ -47,7 +49,10 @@ class SecurityConfig(
         .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
         .authorizeRequests {
             it
-                .antMatchers("/register/**", "/v2/api-docs", "/v3/**", "/swagger-resources/**").permitAll()
+                .antMatchers("/search/contact", "/users/my").authenticated()
+                .antMatchers("/register/**", "/v2/api-docs", "/v3/**", "/swagger-resources/**", "/search/**")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(JwtConfig(jwtProvider, authenticationEntryPoint))
@@ -61,9 +66,7 @@ class SecurityConfig(
         .build()
 
     @Bean
-    fun oAuth2UserService(
-        userService: UserService,
-    ): OAuth2UserService<OAuth2UserRequest, OAuth2User> =
+    fun oAuth2UserService(): OAuth2UserService<OAuth2UserRequest, OAuth2User> =
         OAuth2UserService<OAuth2UserRequest, OAuth2User> { userRequest ->
             val delegate = DefaultOAuth2UserService()
             val oAuth2User = delegate.loadUser(userRequest)
@@ -73,8 +76,7 @@ class SecurityConfig(
             val providerId: String = kakaoOAuth2Response.id.toString()
             val username = registrationId + "_" + providerId
 
-            userService.searchUser(username)
-                ?.let { UserPrincipal.from(it) }
+            userService.searchUser(username)?.let { UserPrincipal.from(it) }
                 ?: UserPrincipal.of(oauthName = username, role = RoleType.GUEST)
         }
 
@@ -109,13 +111,8 @@ class SecurityConfig(
         }
     }
 
-    private fun buildRedirectUrl(baseUri: String, queryParams: Map<String, String>): String {
-        return UriComponentsBuilder.fromUriString(baseUri)
-            .apply {
-                queryParams.forEach { (key, value) -> queryParam(key, value) }
-            }
-            .build()
-            .encode(StandardCharsets.UTF_8)
-            .toUriString()
-    }
+    private fun buildRedirectUrl(baseUri: String, queryParams: Map<String, String>): String =
+        UriComponentsBuilder.fromUriString(baseUri).apply {
+            queryParams.forEach { (key, value) -> queryParam(key, value) }
+        }.build().encode(StandardCharsets.UTF_8).toUriString()
 }
