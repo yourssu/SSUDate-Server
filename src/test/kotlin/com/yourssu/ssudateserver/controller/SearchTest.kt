@@ -122,12 +122,11 @@ class SearchTest : BaseTest() {
             jsonPath("animals") { exists() }
             jsonPath("mbti") { exists() }
             jsonPath("nickName") { exists() }
-            jsonPath("introduction") { exists() }
+            jsonPath("introduce") { exists() }
             jsonPath("contact") { exists() }
             jsonPath("weight") { exists() }
             jsonPath("ticket") { exists() }
             jsonPath("code") { exists() }
-
         }
         test.andDo {
             print()

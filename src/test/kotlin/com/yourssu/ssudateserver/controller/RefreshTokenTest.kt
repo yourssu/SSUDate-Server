@@ -5,7 +5,6 @@ import com.yourssu.ssudateserver.dto.request.RefreshTokenRequestDto
 import com.yourssu.ssudateserver.fixture.PrincipalFixture.Companion.setPrincipal
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
-import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.post
 
@@ -13,7 +12,6 @@ import org.springframework.test.web.servlet.post
 class RefreshTokenTest : BaseTest() {
 
     @Test
-    @WithMockUser
     fun refreshTokenTest() {
         setPrincipal()
 
@@ -31,8 +29,8 @@ class RefreshTokenTest : BaseTest() {
                 jsonPath("refreshToken") { exists() }
             }
     }
+
     @Test
-    @WithMockUser
     fun refreshTokenNotFoundTest() {
         setPrincipal("oauthName2")
 
@@ -51,7 +49,6 @@ class RefreshTokenTest : BaseTest() {
     }
 
     @Test
-    @WithMockUser
     fun invalidRefreshTokenTest() {
         setPrincipal()
 

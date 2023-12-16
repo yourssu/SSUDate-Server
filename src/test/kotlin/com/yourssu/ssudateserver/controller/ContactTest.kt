@@ -3,7 +3,7 @@ package com.yourssu.ssudateserver.controller
 import com.yourssu.ssudateserver.common.BaseTest
 import com.yourssu.ssudateserver.dto.request.ContactRequestDto
 import com.yourssu.ssudateserver.fixture.PrincipalFixture.Companion.setPrincipal
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
@@ -16,8 +16,12 @@ class ContactTest : BaseTest() {
     fun contactTest() {
         setPrincipal()
         val requestDto = ContactRequestDto(
-            nickName = "testNick1",
+            nickName = "testNick2",
         )
+
+        val user = userRepository.findByNickName("testNick2")!!
+        val previousWeight = user.weight
+        println(previousWeight)
 
         val test = mockMvc.post("/contact") {
             contentType = MediaType.APPLICATION_JSON
@@ -25,14 +29,36 @@ class ContactTest : BaseTest() {
         }
         test.andExpect {
             status { isOk() }
-            jsonPath("nickName") { value("testNick1") }
-            jsonPath("contact") { value("Contact1") }
+            jsonPath("nickName") { value("testNick2") }
+            jsonPath("contact") { value("Contact2") }
         }
         test.andDo {
             print()
         }
 
-        Assertions.assertThat(userRepository.findByNickName("testNick1")!!.weight).isEqualTo(1)
+        assertThat(userRepository.findByNickName("testNick2")!!.weight).isEqualTo(previousWeight + 1)
+    }
+
+    @Test
+    fun contactTestFailSelfContact() {
+        setPrincipal()
+
+        val requestDto = ContactRequestDto(
+            nickName = "testNick1",
+        )
+
+        val user = userRepository.findByNickName("testNick1")!!
+
+        val test = mockMvc.post("/contact") {
+            contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(requestDto)
+        }
+        test.andExpect {
+            jsonPath("message") { value("본인의 nickName으로 Contact할 수 없습니다.") }
+        }
+        test.andDo {
+            print()
+        }
     }
 
     @Test

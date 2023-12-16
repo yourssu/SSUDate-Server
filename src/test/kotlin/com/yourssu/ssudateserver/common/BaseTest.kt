@@ -64,7 +64,7 @@ class BaseTest {
                 mbti = mbti,
                 nickName = "testNick${it + 1}",
                 oauthName = "oauthName${it + 1}",
-                introduction = "Introduction${it + 1}",
+                introduce = "Introduction${it + 1}",
                 contact = "Contact${it + 1}",
                 weight = it % 2,
                 createdAt = currentDateTime.plusSeconds(it.toLong()),
