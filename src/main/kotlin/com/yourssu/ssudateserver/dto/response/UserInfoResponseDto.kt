@@ -10,7 +10,7 @@ data class UserInfoResponseDto(
     var animals: Animals,
     var mbti: MBTI,
     var nickName: String,
-    var introduction: String,
+    var introduce: String,
     var contact: String,
     var weight: Int,
     var ticket: Int,

@@ -9,11 +9,13 @@ import com.yourssu.ssudateserver.enums.Animals
 import com.yourssu.ssudateserver.enums.Gender
 import com.yourssu.ssudateserver.enums.MBTI
 import com.yourssu.ssudateserver.enums.RoleType
+import com.yourssu.ssudateserver.exception.logic.DuplicateCodeException
 import com.yourssu.ssudateserver.exception.logic.InvalidRefreshTokenException
 import com.yourssu.ssudateserver.exception.logic.NickNameDuplicateException
 import com.yourssu.ssudateserver.exception.logic.RefreshTokenNotFoundException
 import com.yourssu.ssudateserver.exception.logic.UserNotFoundException
 import com.yourssu.ssudateserver.jwt.component.JwtGenerator
+import com.yourssu.ssudateserver.repository.CodeRepository
 import com.yourssu.ssudateserver.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -25,6 +27,7 @@ import java.time.LocalDateTime
 class UserService(
     private val userRepository: UserRepository,
     private val refreshTokenService: RefreshTokenService,
+    private val codeRepository: CodeRepository,
     private val jwtGenerator: JwtGenerator,
 ) {
 
@@ -41,7 +44,7 @@ class UserService(
             animals = user.animals,
             mbti = user.mbti,
             nickName = user.nickName,
-            introduction = user.introduction,
+            introduce = user.introduce,
             contact = user.contact,
             weight = user.weight,
             ticket = user.ticket,
@@ -87,7 +90,7 @@ class UserService(
                 mbti = mbti,
                 nickName = nickName,
                 oauthName = oauthName,
-                introduction = introduce,
+                introduce = introduce,
                 contact = contact,
                 gender = gender,
                 role = RoleType.USER,

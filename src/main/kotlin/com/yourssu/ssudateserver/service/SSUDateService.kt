@@ -5,6 +5,7 @@ import com.yourssu.ssudateserver.dto.response.SearchContactResponseDto
 import com.yourssu.ssudateserver.dto.response.SearchResponseDto
 import com.yourssu.ssudateserver.enums.Animals
 import com.yourssu.ssudateserver.enums.Gender
+import com.yourssu.ssudateserver.exception.logic.SelfContactException
 import com.yourssu.ssudateserver.exception.logic.UserNotFoundException
 import com.yourssu.ssudateserver.repository.FollowRepository
 import com.yourssu.ssudateserver.repository.UserRepository
@@ -26,7 +27,7 @@ class SSUDateService(
                     animals = user.animals,
                     nickName = user.nickName,
                     mbti = user.mbti,
-                    introduce = user.introduction,
+                    introduce = user.introduce,
                     gender = user.gender,
                     weight = user.weight,
                 )
@@ -41,7 +42,7 @@ class SSUDateService(
                         animals = user.animals,
                         nickName = user.nickName,
                         mbti = user.mbti,
-                        introduce = user.introduction,
+                        introduce = user.introduce,
                         gender = user.gender,
                         weight = user.weight,
                     )
@@ -53,7 +54,7 @@ class SSUDateService(
                         animals = user.animals,
                         nickName = user.nickName,
                         mbti = user.mbti,
-                        introduce = user.introduction,
+                        introduce = user.introduce,
                         gender = user.gender,
                         weight = user.weight,
                     )
@@ -77,7 +78,7 @@ class SSUDateService(
                     animals = it.animals,
                     nickName = it.nickName,
                     mbti = it.mbti,
-                    introduce = it.introduction,
+                    introduce = it.introduce,
                     gender = it.gender,
                     contact = it.contact,
                     weight = it.weight,

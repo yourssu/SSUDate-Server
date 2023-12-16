@@ -6,6 +6,7 @@ import com.yourssu.ssudateserver.enums.MBTI
 import com.yourssu.ssudateserver.enums.RoleType
 import com.yourssu.ssudateserver.exception.logic.UnderZeroTicketException
 import java.time.LocalDateTime
+import java.time.LocalDateTime.now
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.EnumType
@@ -37,7 +38,7 @@ class User(
     val oauthName: String,
 
     @field:Column(name = "introduction", length = 100)
-    var introduction: String,
+    var introduce: String,
 
     @field:Column(name = "contact")
     var contact: String,
@@ -62,20 +63,6 @@ class User(
     @field:Column(name = "created_at")
     val createdAt: LocalDateTime,
 ) {
-    fun contactTo(toUser: User): Follow {
-        if (ticket <= 0) {
-            throw UnderZeroTicketException("이용권이 필요한 기능입니다. 이용권을 충전해 주세요.")
-        }
-        ticket--
-
-        toUser.increaseWeight()
-        return Follow(fromUserId = this.id!!, toUserId = toUser.id!!, createdAt = LocalDateTime.now())
-    }
-
-    private fun increaseWeight() {
-        weight++
-    }
-
     fun updateInfo(
         animals: Animals,
         nickName: String,
@@ -86,8 +73,29 @@ class User(
         this.animals = animals
         this.nickName = nickName
         this.mbti = mbti
-        this.introduction = introduce
+        this.introduce = introduce
         this.contact = contact
         return this
+    }
+
+    fun contactTo(toUser: User): Follow {
+        if (ticket <= 0) {
+            throw UnderZeroTicketException("이용권이 필요한 기능입니다. 이용권을 충전해 주세요.")
+        }
+        ticket--
+
+        toUser.increaseWeight()
+        return Follow(fromUserId = this.id!!, toUserId = toUser.id!!, createdAt = now())
+    }
+
+    fun registerCode(toUser: User): Code {
+        this.ticket++
+        toUser.ticket++
+
+        return Code(fromCode = code, toCode = toUser.code, createdAt = now())
+    }
+
+    private fun increaseWeight() {
+        weight++
     }
 }
