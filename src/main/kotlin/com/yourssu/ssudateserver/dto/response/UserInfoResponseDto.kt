@@ -15,5 +15,6 @@ data class UserInfoResponseDto(
     var weight: Int,
     var ticket: Int,
     val gender: Gender,
+    var code: String,
     val createdAt: LocalDateTime,
 )

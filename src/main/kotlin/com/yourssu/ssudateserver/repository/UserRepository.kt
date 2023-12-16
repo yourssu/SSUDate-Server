@@ -24,5 +24,7 @@ interface UserRepository : JpaRepository<User, Long> {
 
     fun findByOauthName(oauthName: String): User?
 
+    fun findByCode(code: String): User?
+
     fun findTop15ByOrderByCreatedAtDescIdDesc(): List<User>
 }

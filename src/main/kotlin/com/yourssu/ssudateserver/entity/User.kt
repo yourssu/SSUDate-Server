@@ -56,6 +56,9 @@ class User(
     @field:Enumerated(EnumType.STRING)
     val role: RoleType,
 
+    @field:Column(name = "code")
+    var code: String,
+
     @field:Column(name = "created_at")
     val createdAt: LocalDateTime,
 ) {

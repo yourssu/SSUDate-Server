@@ -17,6 +17,7 @@ import com.yourssu.ssudateserver.jwt.component.JwtGenerator
 import com.yourssu.ssudateserver.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.security.SecureRandom
 import java.time.LocalDateTime
 
 @Service
@@ -45,6 +46,7 @@ class UserService(
             weight = user.weight,
             ticket = user.ticket,
             gender = user.gender,
+            code = user.code,
             createdAt = user.createdAt,
         )
     }
@@ -89,6 +91,7 @@ class UserService(
                 contact = contact,
                 gender = gender,
                 role = RoleType.USER,
+                code = generateUniqueReferralCode(),
                 createdAt = LocalDateTime.now(),
             ),
         )
@@ -146,5 +149,26 @@ class UserService(
             contact = updatedUser.contact,
             gender = updatedUser.gender,
         )
+    }
+
+    companion object {
+        private const val CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        private const val CODE_LENGTH = 12
+    }
+
+    private fun generateUniqueReferralCode(): String {
+        val random = SecureRandom()
+
+        while (true) {
+            val referralCode = StringBuilder()
+
+            repeat(CODE_LENGTH) {
+                val randomIndex = random.nextInt(CHARACTERS.length)
+                val randomChar = CHARACTERS[randomIndex]
+                referralCode.append(randomChar)
+            }
+
+            userRepository.findByCode(referralCode.toString()) ?: return referralCode.toString()
+        }
     }
 }
