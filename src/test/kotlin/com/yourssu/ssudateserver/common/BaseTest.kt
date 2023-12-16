@@ -70,6 +70,7 @@ class BaseTest {
                 createdAt = currentDateTime.plusSeconds(it.toLong()),
                 gender = gender,
                 role = RoleType.USER,
+                code = "code${it + 1}",
                 ticket = (it + 1) % 3,
             )
             userList.add(user)

@@ -109,4 +109,28 @@ class SearchTest : BaseTest() {
             print()
         }
     }
+
+    @Test
+    fun getMyInfoTest() {
+        setPrincipal()
+
+        val test = mockMvc.get("/users/my")
+
+        test.andExpect {
+            status { isOk() }
+            jsonPath("id") { exists() }
+            jsonPath("animals") { exists() }
+            jsonPath("mbti") { exists() }
+            jsonPath("nickName") { exists() }
+            jsonPath("introduction") { exists() }
+            jsonPath("contact") { exists() }
+            jsonPath("weight") { exists() }
+            jsonPath("ticket") { exists() }
+            jsonPath("code") { exists() }
+
+        }
+        test.andDo {
+            print()
+        }
+    }
 }
