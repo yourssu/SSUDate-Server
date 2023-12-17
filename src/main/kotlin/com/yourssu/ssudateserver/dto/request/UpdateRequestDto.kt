@@ -1,11 +1,9 @@
 package com.yourssu.ssudateserver.dto.request
 
 import com.yourssu.ssudateserver.enums.MBTI
-import com.yourssu.ssudateserver.enums.MaleAnimals
 import javax.validation.constraints.Size
 
-data class UpdateMaleRequestDto(
-    val animals: MaleAnimals,
+data class UpdateRequestDto(
     @field:Size(message = "닉네임은 최대 9글자 입니다.", min = 1, max = 9)
     val nickName: String,
     val mbti: MBTI,

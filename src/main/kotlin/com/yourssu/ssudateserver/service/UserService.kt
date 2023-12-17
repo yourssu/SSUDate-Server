@@ -120,7 +120,6 @@ class UserService(
 
     @Transactional
     fun updateUserInfo(
-        animals: Animals,
         nickName: String,
         mbti: MBTI,
         introduce: String,
@@ -135,7 +134,6 @@ class UserService(
         }
 
         val updatedUser = user.updateInfo(
-            animals = animals,
             nickName = nickName,
             mbti = mbti,
             introduce = introduce,

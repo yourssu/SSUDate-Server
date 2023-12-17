@@ -4,8 +4,7 @@ import com.yourssu.ssudateserver.dto.request.RefreshTokenRequestDto
 import com.yourssu.ssudateserver.dto.request.RegisterCodeRequestDto
 import com.yourssu.ssudateserver.dto.request.RegisterFemaleRequestDto
 import com.yourssu.ssudateserver.dto.request.RegisterMaleRequestDto
-import com.yourssu.ssudateserver.dto.request.UpdateFemaleRequestDto
-import com.yourssu.ssudateserver.dto.request.UpdateMaleRequestDto
+import com.yourssu.ssudateserver.dto.request.UpdateRequestDto
 import com.yourssu.ssudateserver.dto.response.RefreshTokenResponseDto
 import com.yourssu.ssudateserver.dto.response.RegisterResponseDto
 import com.yourssu.ssudateserver.dto.response.UpdateResponseDto
@@ -84,36 +83,13 @@ class UserController(
         return userService.getMyInfo(oauthName = userPrincipal.name)
     }
 
-    @PatchMapping("/users/my/male")
+    @PatchMapping("/users/my")
     fun updateMaleInfo(
-        @RequestBody updateRequestDto: UpdateMaleRequestDto,
+        @RequestBody updateRequestDto: UpdateRequestDto,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
     ): UpdateResponseDto {
-        if (updateRequestDto.animals == MaleAnimals.ALL) {
-            throw AllCanNotRegisterException("ALL은 등록불가능 합니다.")
-        }
 
         return userService.updateUserInfo(
-            Animals.valueOf(updateRequestDto.animals.toString()),
-            updateRequestDto.nickName,
-            updateRequestDto.mbti,
-            updateRequestDto.introduce,
-            updateRequestDto.contact,
-            userPrincipal.name
-        )
-    }
-
-    @PatchMapping("/users/my/female")
-    fun updateFemaleInfo(
-        @RequestBody updateRequestDto: UpdateFemaleRequestDto,
-        @AuthenticationPrincipal userPrincipal: UserPrincipal,
-    ): UpdateResponseDto {
-        if (updateRequestDto.animals == FemaleAnimals.ALL) {
-            throw AllCanNotRegisterException("ALL은 등록불가능 합니다.")
-        }
-
-        return userService.updateUserInfo(
-            Animals.valueOf(updateRequestDto.animals.toString()),
             updateRequestDto.nickName,
             updateRequestDto.mbti,
             updateRequestDto.introduce,

@@ -25,7 +25,7 @@ class User(
 
     @field:Column(name = "animals")
     @field:Enumerated(EnumType.STRING)
-    var animals: Animals,
+    val animals: Animals,
 
     @field:Column(name = "mbti")
     @field:Enumerated(EnumType.STRING)
@@ -64,13 +64,11 @@ class User(
     val createdAt: LocalDateTime,
 ) {
     fun updateInfo(
-        animals: Animals,
         nickName: String,
         mbti: MBTI,
         introduce: String,
         contact: String,
     ): User {
-        this.animals = animals
         this.nickName = nickName
         this.mbti = mbti
         this.introduce = introduce
