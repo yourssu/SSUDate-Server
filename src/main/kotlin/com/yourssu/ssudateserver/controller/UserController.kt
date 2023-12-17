@@ -84,7 +84,7 @@ class UserController(
     }
 
     @PatchMapping("/users/my")
-    fun updateMaleInfo(
+    fun updateMyInfo(
         @RequestBody updateRequestDto: UpdateRequestDto,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
     ): UpdateResponseDto {
