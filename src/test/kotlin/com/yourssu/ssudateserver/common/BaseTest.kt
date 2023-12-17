@@ -1,6 +1,7 @@
 package com.yourssu.ssudateserver.common
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.yourssu.ssudateserver.entity.Code
 import com.yourssu.ssudateserver.entity.Follow
 import com.yourssu.ssudateserver.entity.User
 import com.yourssu.ssudateserver.enums.Animals
@@ -9,6 +10,7 @@ import com.yourssu.ssudateserver.enums.Gender
 import com.yourssu.ssudateserver.enums.MBTI
 import com.yourssu.ssudateserver.enums.MaleAnimals
 import com.yourssu.ssudateserver.enums.RoleType
+import com.yourssu.ssudateserver.repository.CodeRepository
 import com.yourssu.ssudateserver.repository.FollowRepository
 import com.yourssu.ssudateserver.repository.UserRepository
 import com.yourssu.ssudateserver.service.RefreshTokenService
@@ -35,6 +37,9 @@ class BaseTest {
 
     @Autowired
     protected lateinit var followRepository: FollowRepository
+
+    @Autowired
+    protected lateinit var codeRepository: CodeRepository
 
     @Autowired
     lateinit var tokenService: RefreshTokenService
@@ -88,6 +93,10 @@ class BaseTest {
         )
 
         tokenService.saveTokenInfo(oauthName = "oauthName1", "refreshToken")
+
+        codeRepository.save(
+            Code(fromCode = "code3", toCode = "code1", createdAt = now())
+        )
     }
 
     @BeforeEach
@@ -99,5 +108,6 @@ class BaseTest {
     fun setDown() {
         userRepository.deleteAll()
         followRepository.deleteAll()
+        codeRepository.deleteAll()
     }
 }
