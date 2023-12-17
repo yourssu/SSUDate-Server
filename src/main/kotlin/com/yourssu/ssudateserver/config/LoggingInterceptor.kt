@@ -26,30 +26,34 @@ class LoggingInterceptor(
     ) {
         val clientIP = getClientIp(request)
         val clientOS = getClientOS(request)
-        val cachingRequest: ContentCachingRequestWrapper = request as ContentCachingRequestWrapper
-        val cachingResponse: ContentCachingResponseWrapper = response as ContentCachingResponseWrapper
-        val excludedURIs = listOf(
-            "/logs",
-            "/v3/api-docs",
-            "/swagger-resources",
-            "/swagger-ui",
-            "/webjars",
-            "/swagger",
-            "/favicon",
-            "/oauth"
-        )
-        if (!excludedURIs.any { request.requestURI.startsWith(it) }) {
-            accessLogRepository.save(
-                AccessLog(
-                    ip = clientIP,
-                    os = clientOS,
-                    requestURL = request.requestURL.toString(),
-                    method = request.method,
-                    requestBody = objectMapper.readTree(cachingRequest.contentAsByteArray).toString(),
-                    responseBody = objectMapper.readTree(cachingResponse.contentAsByteArray).toString(),
-                    createdAt = LocalDateTime.now(),
-                ),
+        if (request is ContentCachingRequestWrapper && response is ContentCachingResponseWrapper) {
+            val cachingRequest: ContentCachingRequestWrapper = request
+            val cachingResponse: ContentCachingResponseWrapper = response
+
+            val excludedURIs = listOf(
+                "/logs",
+                "/v3/api-docs",
+                "/swagger-resources",
+                "/swagger-ui",
+                "/webjars",
+                "/swagger",
+                "/favicon",
+                "/oauth"
             )
+
+            if (!excludedURIs.any { request.requestURI.startsWith(it) }) {
+                accessLogRepository.save(
+                    AccessLog(
+                        ip = clientIP,
+                        os = clientOS,
+                        requestURL = request.requestURL.toString(),
+                        method = request.method,
+                        requestBody = objectMapper.readTree(cachingRequest.contentAsByteArray).toString(),
+                        responseBody = objectMapper.readTree(cachingResponse.contentAsByteArray).toString(),
+                        createdAt = LocalDateTime.now(),
+                    )
+                )
+            }
         }
     }
 
