@@ -34,6 +34,7 @@ class SecurityConfig(
     private val jwtProvider: JwtProvider,
     private val jwtGenerator: JwtGenerator,
     private val userService: UserService,
+    private val frontProperties: FrontProperties,
     private val authenticationEntryPoint: AuthenticationEntryPoint,
     private val refreshTokenService: RefreshTokenService,
 ) {
@@ -93,7 +94,7 @@ class SecurityConfig(
             if (oAuth2User.authorities.any { it.authority == "ROLE_GUEST" }) {
                 val oauthName = oAuth2User.name
 
-                val targetUrl = buildRedirectUrl("http://localhost:8080/", mapOf("oauthName" to oauthName))
+                val targetUrl = buildRedirectUrl(frontProperties.url, mapOf("oauthName" to oauthName))
 
                 redirectStrategy.sendRedirect(request, response, targetUrl)
             } else {
@@ -103,7 +104,7 @@ class SecurityConfig(
                 refreshTokenService.saveTokenInfo(oauthName = oAuth2User.name, refreshToken = refreshToken)
 
                 val targetUrl = buildRedirectUrl(
-                    "http://localhost:8080/loginSuccess",
+                    frontProperties.url + "/register",
                     mapOf("accessToken" to accessToken, "refreshToken" to refreshToken)
                 )
                 redirectStrategy.sendRedirect(request, response, targetUrl)

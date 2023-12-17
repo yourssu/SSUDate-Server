@@ -48,6 +48,9 @@ jwt:
   access-exp-time: 3600000   # 1시간
   refresh-exp-time: 604800000   # 7일
 
+front:
+  url: ${FRONT_URL}
+
 #logging:
 #  level:
 #    org:
