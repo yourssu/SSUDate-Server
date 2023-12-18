@@ -4,7 +4,6 @@ import com.yourssu.ssudateserver.common.BaseTest
 import com.yourssu.ssudateserver.dto.request.RegisterFemaleRequestDto
 import com.yourssu.ssudateserver.enums.FemaleAnimals
 import com.yourssu.ssudateserver.enums.MBTI
-import com.yourssu.ssudateserver.service.OauthCacheService
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
@@ -43,7 +42,6 @@ class RegisterFemaleTest : BaseTest() {
         }
         test.andDo {
             print()
-
         }
 
         Assertions.assertThat(userRepository.findByNickName("NICKNICK")!!.weight).isEqualTo(0)
