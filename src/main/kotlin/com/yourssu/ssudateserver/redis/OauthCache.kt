@@ -1,4 +1,4 @@
-package com.yourssu.ssudateserver.entity.redis
+package com.yourssu.ssudateserver.redis
 
 import org.springframework.data.redis.core.RedisHash
 import javax.persistence.Id

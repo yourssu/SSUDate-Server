@@ -1,6 +1,6 @@
 package com.yourssu.ssudateserver.service
 
-import com.yourssu.ssudateserver.entity.redis.OauthCache
+import com.yourssu.ssudateserver.redis.OauthCache
 import com.yourssu.ssudateserver.repository.OauthCacheRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
