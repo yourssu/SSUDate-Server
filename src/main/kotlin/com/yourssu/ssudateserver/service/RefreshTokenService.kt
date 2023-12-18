@@ -1,6 +1,6 @@
 package com.yourssu.ssudateserver.service
 
-import com.yourssu.ssudateserver.entity.RefreshToken
+import com.yourssu.ssudateserver.entity.redis.RefreshToken
 import com.yourssu.ssudateserver.repository.RefreshTokenRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
