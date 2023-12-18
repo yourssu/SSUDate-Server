@@ -94,7 +94,8 @@ class SecurityConfig(
             if (oAuth2User.authorities.any { it.authority == "ROLE_GUEST" }) {
                 val oauthName = oAuth2User.name
 
-                val targetUrl = buildRedirectUrl(frontProperties.url, mapOf("oauthName" to oauthName))
+                val targetUrl =
+                    buildRedirectUrl(frontProperties.url + "/kakaoRedirect", mapOf("oauthName" to oauthName))
 
                 redirectStrategy.sendRedirect(request, response, targetUrl)
             } else {
@@ -104,7 +105,7 @@ class SecurityConfig(
                 refreshTokenService.saveTokenInfo(oauthName = oAuth2User.name, refreshToken = refreshToken)
 
                 val targetUrl = buildRedirectUrl(
-                    frontProperties.url + "/register",
+                    frontProperties.url,
                     mapOf("accessToken" to accessToken, "refreshToken" to refreshToken)
                 )
                 redirectStrategy.sendRedirect(request, response, targetUrl)
