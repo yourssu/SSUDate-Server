@@ -1,7 +1,6 @@
 package com.yourssu.ssudateserver.exception
 
 import com.yourssu.ssudateserver.exception.logic.AllCanNotRegisterException
-import com.yourssu.ssudateserver.exception.logic.CodeNotFoundException
 import com.yourssu.ssudateserver.exception.logic.DuplicateCodeException
 import com.yourssu.ssudateserver.exception.logic.InvalidRefreshTokenException
 import com.yourssu.ssudateserver.exception.logic.NickNameDuplicateException
@@ -18,12 +17,6 @@ import javax.servlet.http.HttpServletRequest
 
 @RestControllerAdvice
 class CommonExceptionHandler {
-    @ExceptionHandler(CodeNotFoundException::class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    fun handleCodeNotFoundException(exception: CodeNotFoundException, request: HttpServletRequest): ErrorResponse {
-        return ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND, exception.message!!, request.requestURI)
-    }
-
     @ExceptionHandler(UnderZeroTicketException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun handleUnderZeroTicketException(
