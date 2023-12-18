@@ -4,6 +4,7 @@ import com.yourssu.ssudateserver.common.BaseTest
 import com.yourssu.ssudateserver.dto.request.RegisterFemaleRequestDto
 import com.yourssu.ssudateserver.enums.FemaleAnimals
 import com.yourssu.ssudateserver.enums.MBTI
+import com.yourssu.ssudateserver.service.OauthCacheService
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
@@ -23,6 +24,8 @@ class RegisterFemaleTest : BaseTest() {
             introduce = "hihihi",
             contact = "01012345678",
         )
+        oauthCacheService.saveOauthName(requestDto.oauthName)
+
         val test = mockMvc.post("/register/female") {
             contentType = MediaType.APPLICATION_JSON
             content = objectMapper.writeValueAsString(requestDto)
@@ -40,15 +43,16 @@ class RegisterFemaleTest : BaseTest() {
         }
         test.andDo {
             print()
+
         }
 
         Assertions.assertThat(userRepository.findByNickName("NICKNICK")!!.weight).isEqualTo(0)
     }
 
     @Test
-    fun registerFemaleTestFailAnimalsAll() {
+    fun registerFemaleFailOathNameNotFoundTest() {
         val requestDto = RegisterFemaleRequestDto(
-            animals = FemaleAnimals.ALL,
+            animals = FemaleAnimals.CAT,
             nickName = "NICKNICK",
             oauthName = "oauthName",
             mbti = MBTI.INFP,
@@ -61,12 +65,38 @@ class RegisterFemaleTest : BaseTest() {
         }
 
         test.andExpect {
+            status { isNotFound() }
+            jsonPath("message") { value("해당 oauthName이 존재하지 않습니다.") }
+        }
+        test.andDo {
+            print()
+        }
+    }
+
+    @Test
+    fun registerFemaleTestFailAnimalsAll() {
+        val requestDto = RegisterFemaleRequestDto(
+            animals = FemaleAnimals.ALL,
+            nickName = "NICKNICK",
+            oauthName = "oauthName",
+            mbti = MBTI.INFP,
+            introduce = "hihihi",
+            contact = "01012345678",
+        )
+
+        val test = mockMvc.post("/register/female") {
+            contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(requestDto)
+        }
+
+        test.andExpect {
             status { isBadRequest() }
             jsonPath("message") { value("ALL은 등록불가능 합니다.") }
         }
         test.andDo {
             print()
         }
+        println(oauthCacheService.findOauthName(requestDto.oauthName))
     }
 
     @Test
@@ -79,6 +109,8 @@ class RegisterFemaleTest : BaseTest() {
             introduce = "hihihi",
             contact = "01012345678",
         )
+        oauthCacheService.saveOauthName(requestDto.oauthName)
+
         val test = mockMvc.post("/register/female") {
             contentType = MediaType.APPLICATION_JSON
             content = objectMapper.writeValueAsString(requestDto)

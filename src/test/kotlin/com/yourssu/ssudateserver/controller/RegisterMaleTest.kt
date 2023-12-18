@@ -23,6 +23,8 @@ class RegisterMaleTest : BaseTest() {
             introduce = "hihihi",
             contact = "01012345678",
         )
+        oauthCacheService.saveOauthName(requestDto.oauthName)
+
         val test = mockMvc.post("/register/male") {
             contentType = MediaType.APPLICATION_JSON
             content = objectMapper.writeValueAsString(requestDto)
@@ -46,6 +48,31 @@ class RegisterMaleTest : BaseTest() {
     }
 
     @Test
+    fun registerMaleFailOauthNameNotFoundTest() {
+        val requestDto = RegisterMaleRequestDto(
+            animals = MaleAnimals.WOLF,
+            nickName = "NICKNICK",
+            oauthName = "oauthName",
+            mbti = MBTI.INFP,
+            introduce = "hihihi",
+            contact = "01012345678",
+        )
+
+        val test = mockMvc.post("/register/male") {
+            contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(requestDto)
+        }
+
+        test.andExpect {
+            status { isNotFound() }
+            jsonPath("message") { value("해당 oauthName이 존재하지 않습니다.") }
+        }
+        test.andDo {
+            print()
+        }
+    }
+
+    @Test
     fun registerMaleTestFailAnimalsAll() {
         val requestDto = RegisterMaleRequestDto(
             animals = MaleAnimals.ALL,
@@ -55,6 +82,7 @@ class RegisterMaleTest : BaseTest() {
             introduce = "hihihi",
             contact = "01012345678",
         )
+
         val test = mockMvc.post("/register/male") {
             contentType = MediaType.APPLICATION_JSON
             content = objectMapper.writeValueAsString(requestDto)
@@ -79,6 +107,8 @@ class RegisterMaleTest : BaseTest() {
             introduce = "hihihi",
             contact = "01012345678",
         )
+        oauthCacheService.saveOauthName(requestDto.oauthName)
+
         val test = mockMvc.post("/register/male") {
             contentType = MediaType.APPLICATION_JSON
             content = objectMapper.writeValueAsString(requestDto)
