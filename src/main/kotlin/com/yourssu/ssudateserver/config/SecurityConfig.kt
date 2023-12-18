@@ -5,6 +5,7 @@ import com.yourssu.ssudateserver.dto.security.UserPrincipal
 import com.yourssu.ssudateserver.enums.RoleType
 import com.yourssu.ssudateserver.jwt.component.JwtGenerator
 import com.yourssu.ssudateserver.jwt.component.JwtProvider
+import com.yourssu.ssudateserver.service.OauthCacheService
 import com.yourssu.ssudateserver.service.RefreshTokenService
 import com.yourssu.ssudateserver.service.UserService
 import org.springframework.context.annotation.Bean
@@ -37,6 +38,7 @@ class SecurityConfig(
     private val frontProperties: FrontProperties,
     private val authenticationEntryPoint: AuthenticationEntryPoint,
     private val refreshTokenService: RefreshTokenService,
+    private val oauthCacheService: OauthCacheService,
 ) {
 
     @Bean
@@ -93,6 +95,8 @@ class SecurityConfig(
 
             if (oAuth2User.authorities.any { it.authority == "ROLE_GUEST" }) {
                 val oauthName = oAuth2User.name
+
+                oauthCacheService.saveOauthName(oauthName)
 
                 val targetUrl =
                     buildRedirectUrl(frontProperties.url + "/kakao-redirect", mapOf("oauthName" to oauthName))

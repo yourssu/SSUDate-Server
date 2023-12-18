@@ -25,8 +25,9 @@ import java.time.LocalDateTime
 @Service
 @Transactional(readOnly = true)
 class UserService(
-    private val userRepository: UserRepository,
     private val refreshTokenService: RefreshTokenService,
+    private val oauthCacheService: OauthCacheService,
+    private val userRepository: UserRepository,
     private val codeRepository: CodeRepository,
     private val jwtGenerator: JwtGenerator,
 ) {
@@ -84,6 +85,12 @@ class UserService(
         if (userRepository.findByNickName(nickName) != null) {
             throw NickNameDuplicateException("해당 닉네임은 이미 존재합니다.")
         }
+
+        oauthCacheService.findOauthName(oauthName)
+            ?: throw UserNotFoundException("잘못된 oauthName 입니다.")
+
+        oauthCacheService.removeOathName(oauthName)
+
         val saveUser = userRepository.save(
             User(
                 animals = animals,
