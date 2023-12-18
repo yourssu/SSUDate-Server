@@ -82,14 +82,14 @@ class UserService(
         contact: String,
         gender: Gender,
     ): RegisterResponseDto {
+        oauthCacheService.findOauthName(oauthName)
+            ?: throw UserNotFoundException("해당 oauthName이 존재하지 않습니다.")
+
+        oauthCacheService.removeOathName(oauthName)
+
         if (userRepository.findByNickName(nickName) != null) {
             throw NickNameDuplicateException("해당 닉네임은 이미 존재합니다.")
         }
-
-        oauthCacheService.findOauthName(oauthName)
-            ?: throw UserNotFoundException("잘못된 oauthName 입니다.")
-
-        oauthCacheService.removeOathName(oauthName)
 
         val saveUser = userRepository.save(
             User(
