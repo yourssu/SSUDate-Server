@@ -95,7 +95,7 @@ class SecurityConfig(
                 val oauthName = oAuth2User.name
 
                 val targetUrl =
-                    buildRedirectUrl(frontProperties.url + "/kakaoRedirect", mapOf("oauthName" to oauthName))
+                    buildRedirectUrl(frontProperties.url + "/kakao-redirect", mapOf("oauthName" to oauthName))
 
                 redirectStrategy.sendRedirect(request, response, targetUrl)
             } else {
