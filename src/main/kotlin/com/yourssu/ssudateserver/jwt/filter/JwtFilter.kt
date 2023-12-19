@@ -2,6 +2,7 @@ package com.yourssu.ssudateserver.jwt.filter
 
 import com.yourssu.ssudateserver.jwt.component.JwtProvider
 import com.yourssu.ssudateserver.jwt.exception.AuthenticateException
+import com.yourssu.ssudateserver.service.BlackTokenService
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.OncePerRequestFilter
 import javax.servlet.FilterChain
@@ -28,9 +29,13 @@ class JwtFilter(
             return
         }
 
-        val token = extractAccessTokenFromHeader(authorizationHeader)
-        val authentication = jwtProvider.authenticate(token)
-        SecurityContextHolder.getContext().authentication = authentication
+        try {
+            val token = extractAccessTokenFromHeader(authorizationHeader)
+            val authentication = jwtProvider.authenticate(token)
+            SecurityContextHolder.getContext().authentication = authentication
+        } catch (exception: AuthenticateException) {
+            request.setAttribute("AuthenticateException", exception)
+        }
 
         filterChain.doFilter(request, response)
     }

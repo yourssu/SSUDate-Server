@@ -51,7 +51,7 @@ class CommonExceptionHandler {
     }
 
     @ExceptionHandler(RefreshTokenNotFoundException::class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     fun handleRefreshTokenNotFoundException(
         exception: RefreshTokenNotFoundException,
         request: HttpServletRequest,

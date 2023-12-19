@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.yourssu.ssudateserver.exception.ErrorResponse
+import com.yourssu.ssudateserver.jwt.exception.AuthenticateException
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.core.AuthenticationException
@@ -20,10 +21,12 @@ class JwtAuthenticationEntryPoint : AuthenticationEntryPoint {
         response: HttpServletResponse,
         ex: AuthenticationException,
     ) {
+        val exception = request.getAttribute("AuthenticateException") as? AuthenticateException
+
         val errorResponse = ErrorResponse(
             time = LocalDateTime.now(),
             status = HttpStatus.UNAUTHORIZED,
-            message = ex.message!!,
+            message = exception?.message ?: ex.message!!,
             requestURI = request.requestURI.toString(),
         )
 
