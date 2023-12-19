@@ -5,6 +5,7 @@ import com.yourssu.ssudateserver.dto.request.RegisterCodeRequestDto
 import com.yourssu.ssudateserver.dto.request.RegisterFemaleRequestDto
 import com.yourssu.ssudateserver.dto.request.RegisterMaleRequestDto
 import com.yourssu.ssudateserver.dto.request.UpdateRequestDto
+import com.yourssu.ssudateserver.dto.response.LogoutResponseDto
 import com.yourssu.ssudateserver.dto.response.RefreshTokenResponseDto
 import com.yourssu.ssudateserver.dto.response.RegisterResponseDto
 import com.yourssu.ssudateserver.dto.response.UpdateResponseDto
@@ -96,6 +97,14 @@ class UserController(
             updateRequestDto.contact,
             userPrincipal.name
         )
+    }
+
+    @PostMapping("/logout")
+    fun logout(
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+    ): LogoutResponseDto {
+        userService.logout(userPrincipal.token, userPrincipal.name)
+        return LogoutResponseDto("로그아웃")
     }
 
     @PostMapping("/refresh")

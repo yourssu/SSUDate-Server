@@ -5,6 +5,7 @@ import com.yourssu.ssudateserver.dto.security.UserPrincipal
 import com.yourssu.ssudateserver.enums.RoleType
 import com.yourssu.ssudateserver.jwt.component.JwtGenerator
 import com.yourssu.ssudateserver.jwt.component.JwtProvider
+import com.yourssu.ssudateserver.service.BlackTokenService
 import com.yourssu.ssudateserver.service.OauthCacheService
 import com.yourssu.ssudateserver.service.RefreshTokenService
 import com.yourssu.ssudateserver.service.UserService
@@ -39,6 +40,7 @@ class SecurityConfig(
     private val authenticationEntryPoint: AuthenticationEntryPoint,
     private val refreshTokenService: RefreshTokenService,
     private val oauthCacheService: OauthCacheService,
+    private val blackTokenService: BlackTokenService,
 ) {
 
     @Bean
@@ -46,6 +48,8 @@ class SecurityConfig(
         http: HttpSecurity,
         oAuth2UserService: OAuth2UserService<OAuth2UserRequest, OAuth2User>,
     ): SecurityFilterChain = http
+        .formLogin { it.disable() }
+        .logout { it.disable() }
         .csrf { it.disable() }
         .headers { it.frameOptions().disable() }
         .cors {}
@@ -58,7 +62,10 @@ class SecurityConfig(
                 .antMatchers(HttpMethod.GET, "/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .apply(JwtConfig(jwtProvider, authenticationEntryPoint))
+                .apply(JwtConfig(jwtProvider, blackTokenService))
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
         }
         .oauth2Login {
             it.userInfoEndpoint { userInfo ->
@@ -109,7 +116,7 @@ class SecurityConfig(
                 refreshTokenService.saveTokenInfo(oauthName = oAuth2User.name, refreshToken = refreshToken)
 
                 val targetUrl = buildRedirectUrl(
-                    frontProperties.url,
+                    frontProperties.url + "/kakao-redirect",
                     mapOf("accessToken" to accessToken, "refreshToken" to refreshToken)
                 )
                 redirectStrategy.sendRedirect(request, response, targetUrl)

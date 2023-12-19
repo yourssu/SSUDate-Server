@@ -30,6 +30,7 @@ class UserService(
     private val userRepository: UserRepository,
     private val codeRepository: CodeRepository,
     private val jwtGenerator: JwtGenerator,
+    private val blackTokenService: BlackTokenService,
 ) {
 
     fun searchUser(oauthName: String): User? {
@@ -55,6 +56,7 @@ class UserService(
         )
     }
 
+    @Transactional
     fun refreshToken(refreshToken: String, oauthName: String): RefreshTokenResponseDto {
         val foundedToken = refreshTokenService.findRefreshToken(oauthName)
             ?: throw RefreshTokenNotFoundException("유저의 refreshToken이 존재하지 않습니다.")
@@ -70,6 +72,14 @@ class UserService(
         refreshTokenService.saveTokenInfo(oauthName, newRefreshToken)
 
         return RefreshTokenResponseDto(accessToken = accessToken, refreshToken = newRefreshToken)
+    }
+
+    @Transactional
+    fun logout(accessToken: String, oauthName: String) {
+        userRepository.findByOauthName(oauthName) ?: throw UserNotFoundException("해당 oauthName인 유저가 없습니다.")
+
+        refreshTokenService.removeRefreshToken(oauthName)
+        blackTokenService.saveBlackTokenInfo(accessToken)
     }
 
     @Transactional

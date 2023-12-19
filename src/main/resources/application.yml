@@ -45,7 +45,7 @@ spring:
 
 jwt:
   secret-key: ${SECRET_KEY}
-  access-exp-time: 3600000   # 1시간
+  access-exp-time: 1800000   # 30분
   refresh-exp-time: 604800000   # 7일
 
 front:

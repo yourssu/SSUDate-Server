@@ -13,6 +13,7 @@ private const val AUTHORIZATION_SCHEMA = "Bearer"
 
 class JwtFilter(
     private val jwtProvider: JwtProvider,
+    private val blackTokenService: BlackTokenService,
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -43,5 +44,9 @@ class JwtFilter(
     private fun validateAccessToken(splits: List<String>) {
         if (splits.size != 2) throw AuthenticateException("잘못된 형식의 Authorization 헤더값 입니다.")
         if (splits[0] != AUTHORIZATION_SCHEMA) throw AuthenticateException("잘못된 Authorization 스키마 입니다.")
+
+        blackTokenService.findBlackToken(splits[1])?.run {
+            throw AuthenticateException("사용이 금지된 accessToken 입니다.")
+        }
     }
 }
