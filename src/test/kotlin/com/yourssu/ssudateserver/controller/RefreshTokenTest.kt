@@ -43,7 +43,7 @@ class RefreshTokenTest : BaseTest() {
 
         test
             .andExpect {
-                status { isBadRequest() }
+                status { isNotFound() }
                 jsonPath("message") { value("유저의 refreshToken이 존재하지 않습니다.") }
             }
     }
