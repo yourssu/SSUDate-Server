@@ -31,6 +31,7 @@ class UserService(
     private val codeRepository: CodeRepository,
     private val jwtGenerator: JwtGenerator,
     private val blackTokenService: BlackTokenService,
+    private val webClientService: WebClientService,
 ) {
 
     fun searchUser(oauthName: String): User? {
@@ -206,6 +207,17 @@ class UserService(
             gender = updatedUser.gender,
             createdAt = updatedUser.createdAt,
         )
+    }
+
+    @Transactional
+    fun deleteUser(accessToken: String, oauthName: String) {
+        val user = userRepository.findByOauthName(oauthName) ?: throw UserNotFoundException("해당 oauthName인 유저가 없습니다.")
+
+        webClientService.deleteUser(oauthName.removePrefix("kakao_"))
+
+        refreshTokenService.removeRefreshToken(oauthName)
+        blackTokenService.saveBlackTokenInfo(accessToken)
+        userRepository.delete(user)
     }
 
     companion object {

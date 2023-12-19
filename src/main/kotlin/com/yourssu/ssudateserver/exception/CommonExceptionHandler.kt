@@ -8,6 +8,7 @@ import com.yourssu.ssudateserver.exception.logic.RefreshTokenNotFoundException
 import com.yourssu.ssudateserver.exception.logic.SelfContactException
 import com.yourssu.ssudateserver.exception.logic.UnderZeroTicketException
 import com.yourssu.ssudateserver.exception.logic.UserNotFoundException
+import com.yourssu.ssudateserver.exception.logic.WebClientException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -81,6 +82,15 @@ class CommonExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun handleDuplicateCodeException(
         exception: DuplicateCodeException,
+        request: HttpServletRequest,
+    ): ErrorResponse {
+        return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)
+    }
+
+    @ExceptionHandler(WebClientException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleDuplicateCodeException(
+        exception: WebClientException,
         request: HttpServletRequest,
     ): ErrorResponse {
         return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)
