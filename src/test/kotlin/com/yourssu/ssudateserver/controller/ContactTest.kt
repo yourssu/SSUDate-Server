@@ -47,14 +47,33 @@ class ContactTest : BaseTest() {
             nickName = "testNick1",
         )
 
-        val user = userRepository.findByNickName("testNick1")!!
-
         val test = mockMvc.post("/contact") {
             contentType = MediaType.APPLICATION_JSON
             content = objectMapper.writeValueAsString(requestDto)
         }
         test.andExpect {
-            jsonPath("message") { value("본인의 nickName으로 Contact할 수 없습니다.") }
+            jsonPath("message") { value("본인의 nickName으로 조회할 수 없습니다.") }
+        }
+        test.andDo {
+            print()
+        }
+    }
+
+    @Test
+    fun contactTestFailDuplicateContact() {
+        setPrincipal("oauthName2")
+
+        val requestDto = ContactRequestDto(
+            nickName = "testNick3",
+        )
+
+        val test = mockMvc.post("/contact") {
+            contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(requestDto)
+        }
+
+        test.andExpect {
+            jsonPath("message") { value("이미 조회한 유저입니다.") }
         }
         test.andDo {
             print()

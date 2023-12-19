@@ -5,6 +5,7 @@ import com.yourssu.ssudateserver.dto.response.SearchContactResponseDto
 import com.yourssu.ssudateserver.dto.response.SearchResponseDto
 import com.yourssu.ssudateserver.enums.Animals
 import com.yourssu.ssudateserver.enums.Gender
+import com.yourssu.ssudateserver.exception.logic.DuplicateFollowException
 import com.yourssu.ssudateserver.exception.logic.SelfContactException
 import com.yourssu.ssudateserver.exception.logic.UserNotFoundException
 import com.yourssu.ssudateserver.repository.FollowRepository
@@ -92,10 +93,14 @@ class SSUDateService(
             userRepository.findByOauthName(oauthName) ?: throw UserNotFoundException("해당 oauthName인 유저가 없습니다.")
 
         if (fromUser.nickName == nickName) {
-            throw SelfContactException("본인의 nickName으로 Contact할 수 없습니다.")
+            throw SelfContactException("본인의 nickName으로 조회할 수 없습니다.")
         }
 
         val toUser = userRepository.findByNickName(nickName) ?: throw UserNotFoundException("nickName인 유저가 없습니다.")
+
+        followRepository.findByFromUserIdAndToUserId(fromUserId = fromUser.id!!, toUserId = toUser.id!!)?.run {
+            throw DuplicateFollowException("이미 조회한 유저입니다.")
+        }
 
         followRepository.save(fromUser.contactTo(toUser))
 

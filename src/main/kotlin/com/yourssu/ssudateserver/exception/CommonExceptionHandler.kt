@@ -2,6 +2,7 @@ package com.yourssu.ssudateserver.exception
 
 import com.yourssu.ssudateserver.exception.logic.AllCanNotRegisterException
 import com.yourssu.ssudateserver.exception.logic.DuplicateCodeException
+import com.yourssu.ssudateserver.exception.logic.DuplicateFollowException
 import com.yourssu.ssudateserver.exception.logic.InvalidRefreshTokenException
 import com.yourssu.ssudateserver.exception.logic.NickNameDuplicateException
 import com.yourssu.ssudateserver.exception.logic.RefreshTokenNotFoundException
@@ -89,8 +90,17 @@ class CommonExceptionHandler {
 
     @ExceptionHandler(WebClientException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun handleDuplicateCodeException(
+    fun handleWebClientException(
         exception: WebClientException,
+        request: HttpServletRequest,
+    ): ErrorResponse {
+        return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)
+    }
+
+    @ExceptionHandler(DuplicateFollowException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleDuplicateFollowException(
+        exception: DuplicateFollowException,
         request: HttpServletRequest,
     ): ErrorResponse {
         return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)
