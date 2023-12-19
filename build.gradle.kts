@@ -4,6 +4,7 @@ plugins {
     id("org.springframework.boot") version "2.7.3"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
     id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
+    id("com.google.osdetector") version "1.7.1"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
     kotlin("plugin.jpa") version "1.6.21"
@@ -27,6 +28,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("org.springframework.boot:spring-boot-starter-security")
 
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -46,6 +49,11 @@ dependencies {
 
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("io.projectreactor:reactor-test")
+
+    if (osdetector.classifier == "osx-aarch_64") {
+        runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.77.Final:${osdetector.classifier}")
+    }
 }
 
 tasks.withType<KotlinCompile> {

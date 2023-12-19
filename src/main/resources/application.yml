@@ -43,6 +43,10 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
+kakao:
+  remove-url: ${REMOVE_URL}
+  admin-key: ${ADMIN_KEY}
+
 jwt:
   secret-key: ${SECRET_KEY}
   access-exp-time: 1800000   # 30분
