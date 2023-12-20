@@ -105,4 +105,31 @@ class RegisterCodeTest : BaseTest() {
             print()
         }
     }
+
+    @Test
+    fun registerCodeFailUnderZeroInputChanceTest() {
+        setPrincipal("oauthName1")
+
+        val registerCodeRequestDtoFirst = RegisterCodeRequestDto("code4")
+        val registerCodeRequestDtoSecond = RegisterCodeRequestDto("code5")
+
+        mockMvc.post("/register/code") {
+            contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(registerCodeRequestDtoFirst)
+        }
+
+        val test = mockMvc.post("/register/code") {
+            contentType = MediaType.APPLICATION_JSON
+            content = objectMapper.writeValueAsString(registerCodeRequestDtoSecond)
+        }
+
+        test.andExpect {
+            status { isBadRequest() }
+            jsonPath("message") { value("코드입력 기회가 남아있지 않아요.") }
+        }
+
+        test.andDo {
+            print()
+        }
+    }
 }

@@ -127,6 +127,7 @@ class SearchTest : BaseTest() {
             jsonPath("weight") { exists() }
             jsonPath("ticket") { exists() }
             jsonPath("code") { exists() }
+            jsonPath("codeInputChance") { exists() }
         }
         test.andDo {
             print()
