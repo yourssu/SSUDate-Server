@@ -39,6 +39,8 @@ class RegisterFemaleTest : BaseTest() {
             jsonPath("introduce") { value("hihihi") }
             jsonPath("contact") { value("01012345678") }
             jsonPath("gender") { value("FEMALE") }
+            jsonPath("code") { exists() }
+            jsonPath("codeInputChance") { value(1) }
         }
         test.andDo {
             print()
