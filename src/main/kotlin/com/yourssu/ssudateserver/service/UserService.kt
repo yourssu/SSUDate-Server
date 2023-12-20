@@ -99,7 +99,7 @@ class UserService(
         oauthCacheService.removeOathName(oauthName)
 
         if (userRepository.findByNickName(nickName) != null) {
-            throw NickNameDuplicateException("해당 닉네임은 이미 존재합니다.")
+            throw NickNameDuplicateException("이미 존재하는 닉네임이에요.")
         }
 
         val saveUser = userRepository.save(
@@ -148,7 +148,7 @@ class UserService(
             userRepository.findByOauthName(oauthName) ?: throw UserNotFoundException("해당 oauthName인 유저가 없습니다.")
 
         if (user.nickName != nickName && userRepository.findByNickName(nickName) != null) {
-            throw NickNameDuplicateException("해당 닉네임은 이미 존재합니다.")
+            throw NickNameDuplicateException("이미 존재하는 닉네임이에요.")
         }
 
         val updatedUser = user.updateInfo(
@@ -178,16 +178,16 @@ class UserService(
         val myCode = user.code
 
         if (myCode == friendCode) {
-            throw DuplicateCodeException("내 code는 등록할 수 없습니다.")
+            throw DuplicateCodeException("내 코드는 등록할 수 없어요.")
         }
         codeRepository.findByFromCodeAndToCode(myCode, friendCode)?.run {
-            throw DuplicateCodeException("이미 등록한 친구 code입니다.")
+            throw DuplicateCodeException("이미 등록한 친구 코드예요.")
         }
         codeRepository.findByFromCodeAndToCode(friendCode, myCode)?.run {
-            throw DuplicateCodeException("친구가 이미 당신의 code를 등록했습니다.")
+            throw DuplicateCodeException("친구가 이미 당신의 코드를 등록했어요.")
         }
         val toUser = userRepository.findByCode(friendCode)
-            ?: throw UserNotFoundException("해당 code의 유저가 존재하지 않습니다.")
+            ?: throw UserNotFoundException("해당 코드의 유저가 존재하지 않아요.")
 
         val code = user.registerCode(toUser)
         val updatedUser = userRepository.save(user)

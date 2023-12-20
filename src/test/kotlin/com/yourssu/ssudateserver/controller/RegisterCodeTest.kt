@@ -52,7 +52,7 @@ class RegisterCodeTest : BaseTest() {
 
         test.andExpect {
             status { isBadRequest() }
-            jsonPath("message") { value("내 code는 등록할 수 없습니다.") }
+            jsonPath("message") { value("내 코드는 등록할 수 없어요.") }
         }
         test.andDo {
             print()
@@ -77,7 +77,7 @@ class RegisterCodeTest : BaseTest() {
 
         test.andExpect {
             status { isBadRequest() }
-            jsonPath("message") { value("이미 등록한 친구 code입니다.") }
+            jsonPath("message") { value("이미 등록한 친구 코드예요.") }
         }
 
         test.andDo {
@@ -98,7 +98,7 @@ class RegisterCodeTest : BaseTest() {
 
         test.andExpect {
             status { isBadRequest() }
-            jsonPath("message") { value("친구가 이미 당신의 code를 등록했습니다.") }
+            jsonPath("message") { value("친구가 이미 당신의 코드를 등록했어요.") }
         }
 
         test.andDo {

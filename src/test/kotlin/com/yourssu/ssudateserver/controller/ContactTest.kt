@@ -52,7 +52,7 @@ class ContactTest : BaseTest() {
             content = objectMapper.writeValueAsString(requestDto)
         }
         test.andExpect {
-            jsonPath("message") { value("본인의 nickName으로 조회할 수 없습니다.") }
+            jsonPath("message") { value("본인의 프로필은 조회할 수 없어요.") }
         }
         test.andDo {
             print()
@@ -73,7 +73,7 @@ class ContactTest : BaseTest() {
         }
 
         test.andExpect {
-            jsonPath("message") { value("이미 조회한 유저입니다.") }
+            jsonPath("message") { value("이미 조회한 프로필이에요.") }
         }
         test.andDo {
             print()
@@ -92,7 +92,7 @@ class ContactTest : BaseTest() {
         }
         test.andExpect {
             status { isNotFound() }
-            jsonPath("message") { value("nickName인 유저가 없습니다.") }
+            jsonPath("message") { value("존재하지 않는 닉네임이에요.") }
         }
         test.andDo {
             print()

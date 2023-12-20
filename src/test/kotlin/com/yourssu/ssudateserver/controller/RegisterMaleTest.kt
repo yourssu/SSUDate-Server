@@ -116,7 +116,7 @@ class RegisterMaleTest : BaseTest() {
 
         test.andExpect {
             status { isBadRequest() }
-            jsonPath("message") { value("해당 닉네임은 이미 존재합니다.") }
+            jsonPath("message") { value("이미 존재하는 닉네임이에요.") }
         }
         test.andDo {
             print()

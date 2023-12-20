@@ -93,13 +93,13 @@ class SSUDateService(
             userRepository.findByOauthName(oauthName) ?: throw UserNotFoundException("해당 oauthName인 유저가 없습니다.")
 
         if (fromUser.nickName == nickName) {
-            throw SelfContactException("본인의 nickName으로 조회할 수 없습니다.")
+            throw SelfContactException("본인의 프로필은 조회할 수 없어요.")
         }
 
-        val toUser = userRepository.findByNickName(nickName) ?: throw UserNotFoundException("nickName인 유저가 없습니다.")
+        val toUser = userRepository.findByNickName(nickName) ?: throw UserNotFoundException("존재하지 않는 닉네임이에요.")
 
         followRepository.findByFromUserIdAndToUserId(fromUserId = fromUser.id!!, toUserId = toUser.id!!)?.run {
-            throw DuplicateFollowException("이미 조회한 유저입니다.")
+            throw DuplicateFollowException("이미 조회한 프로필이에요.")
         }
 
         followRepository.save(fromUser.contactTo(toUser))
