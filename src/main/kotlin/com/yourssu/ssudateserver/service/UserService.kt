@@ -53,6 +53,7 @@ class UserService(
             ticket = user.ticket,
             gender = user.gender,
             code = user.code,
+            codeInputChance = user.codeInputChance,
             createdAt = user.createdAt,
         )
     }
@@ -204,6 +205,7 @@ class UserService(
             ticket = updatedUser.ticket,
             contact = updatedUser.contact,
             code = updatedUser.code,
+            codeInputChance = updatedUser.codeInputChance,
             gender = updatedUser.gender,
             createdAt = updatedUser.createdAt,
         )

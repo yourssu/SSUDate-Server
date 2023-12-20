@@ -4,6 +4,7 @@ import com.yourssu.ssudateserver.enums.Animals
 import com.yourssu.ssudateserver.enums.Gender
 import com.yourssu.ssudateserver.enums.MBTI
 import com.yourssu.ssudateserver.enums.RoleType
+import com.yourssu.ssudateserver.exception.logic.UnderZeroChanceInputCodeException
 import com.yourssu.ssudateserver.exception.logic.UnderZeroTicketException
 import java.time.LocalDateTime
 import java.time.LocalDateTime.now
@@ -60,6 +61,9 @@ class User(
     @field:Column(name = "code")
     var code: String,
 
+    @field:Column(name = "code_input_chance")
+    var codeInputChance: Int = 1,
+
     @field:Column(name = "created_at")
     val createdAt: LocalDateTime,
 ) {
@@ -87,7 +91,12 @@ class User(
     }
 
     fun registerCode(toUser: User): Code {
-        this.ticket++
+        if (codeInputChance <= 0) {
+            throw UnderZeroChanceInputCodeException("코드입력 기회가 남아있지 않아요.")
+        }
+
+        codeInputChance--
+        ticket++
         toUser.ticket++
 
         return Code(fromCode = code, toCode = toUser.code, createdAt = now())

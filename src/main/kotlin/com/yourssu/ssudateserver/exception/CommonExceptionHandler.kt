@@ -7,6 +7,7 @@ import com.yourssu.ssudateserver.exception.logic.InvalidRefreshTokenException
 import com.yourssu.ssudateserver.exception.logic.NickNameDuplicateException
 import com.yourssu.ssudateserver.exception.logic.RefreshTokenNotFoundException
 import com.yourssu.ssudateserver.exception.logic.SelfContactException
+import com.yourssu.ssudateserver.exception.logic.UnderZeroChanceInputCodeException
 import com.yourssu.ssudateserver.exception.logic.UnderZeroTicketException
 import com.yourssu.ssudateserver.exception.logic.UserNotFoundException
 import com.yourssu.ssudateserver.exception.logic.WebClientException
@@ -101,6 +102,15 @@ class CommonExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun handleDuplicateFollowException(
         exception: DuplicateFollowException,
+        request: HttpServletRequest,
+    ): ErrorResponse {
+        return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)
+    }
+
+    @ExceptionHandler(UnderZeroChanceInputCodeException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleUnderZeroChanceInputCodeException(
+        exception: UnderZeroChanceInputCodeException,
         request: HttpServletRequest,
     ): ErrorResponse {
         return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)
