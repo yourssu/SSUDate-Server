@@ -13,4 +13,6 @@ data class UpdateResponseDto(
     val ticket: Int,
     val contact: String,
     val gender: Gender,
+    val code: String,
+    val codeInputChance: Int,
 )

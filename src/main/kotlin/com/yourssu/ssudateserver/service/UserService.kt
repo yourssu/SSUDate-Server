@@ -132,6 +132,8 @@ class UserService(
             saveUser.ticket,
             contact,
             gender,
+            code = saveUser.code,
+            codeInputChance = saveUser.codeInputChance,
             accessToken,
             refreshToken,
         )
@@ -168,6 +170,8 @@ class UserService(
             ticket = updatedUser.ticket,
             contact = updatedUser.contact,
             gender = updatedUser.gender,
+            code = updatedUser.code,
+            codeInputChance = updatedUser.codeInputChance,
         )
     }
 

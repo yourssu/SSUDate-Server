@@ -13,6 +13,8 @@ class RegisterResponseDto(
     val ticket: Int,
     val contact: String,
     val gender: Gender,
+    val code: String,
+    val codeInputChance: Int,
     val accessToken: String,
     val refreshToken: String,
 )
