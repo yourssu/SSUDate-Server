@@ -11,5 +11,5 @@ data class SearchContactResponseDto(
     val introduce: String,
     val gender: Gender,
     val contact: String,
-    var weight: Int,
+    val weight: Int,
 )

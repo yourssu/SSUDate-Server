@@ -7,14 +7,15 @@ import java.time.LocalDateTime
 
 data class UserInfoResponseDto(
     val id: Long,
-    var animals: Animals,
-    var mbti: MBTI,
-    var nickName: String,
-    var introduce: String,
-    var contact: String,
-    var weight: Int,
-    var ticket: Int,
+    val animals: Animals,
+    val mbti: MBTI,
+    val nickName: String,
+    val introduce: String,
+    val contact: String,
+    val weight: Int,
+    val ticket: Int,
     val gender: Gender,
-    var code: String,
+    val code: String,
+    val codeInputChance: Int,
     val createdAt: LocalDateTime,
 )
