@@ -67,10 +67,6 @@ class SSUDateService(
         val user =
             userRepository.findByOauthName(oauthName) ?: throw UserNotFoundException("해당 oauthName인 유저가 없습니다.")
 
-        userRepository.findAll().forEach {
-            println(it.id)
-        }
-
         val toUserIdList: List<Long> = followRepository.findAllByFromUserId(user.id!!).map { it.toUserId }
 
         return userRepository.findAllByIdIn(toUserIdList)
