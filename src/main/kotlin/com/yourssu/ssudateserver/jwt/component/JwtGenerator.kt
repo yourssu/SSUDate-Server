@@ -10,22 +10,26 @@ import java.util.Date
 class JwtGenerator(
     private val jwtProperties: JwtProperties,
 ) {
-
     fun generateAccessToken(oauthName: String): String {
-        val claims = mutableMapOf<String, Any>().apply {
-            put("oauthName", oauthName)
-        }
+        val claims =
+            mutableMapOf<String, Any>().apply {
+                put("oauthName", oauthName)
+            }
         return createToken(claims, jwtProperties.accessExpTime)
     }
 
     fun generateRefreshToken(oauthName: String): String {
-        val claims = mutableMapOf<String, Any>().apply {
-            put("oauthName", oauthName)
-        }
+        val claims =
+            mutableMapOf<String, Any>().apply {
+                put("oauthName", oauthName)
+            }
         return createToken(claims, jwtProperties.refreshExpTime)
     }
 
-    private fun createToken(claims: MutableMap<String, Any>, expTime: Int): String {
+    private fun createToken(
+        claims: MutableMap<String, Any>,
+        expTime: Int,
+    ): String {
         return Jwts.builder()
             .setClaims(claims)
             .setIssuedAt(Date(System.currentTimeMillis()))

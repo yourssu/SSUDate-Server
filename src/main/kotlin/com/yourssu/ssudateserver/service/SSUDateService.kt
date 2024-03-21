@@ -19,7 +19,6 @@ class SSUDateService(
     private val userRepository: UserRepository,
     private val followRepository: FollowRepository,
 ) {
-
     @Transactional
     fun recentSearch(): List<SearchResponseDto> {
         return userRepository.findTop15ByOrderByCreatedAtDescIdDesc()
@@ -35,7 +34,10 @@ class SSUDateService(
             }
     }
 
-    fun search(gender: Gender, animals: Animals): List<SearchResponseDto> {
+    fun search(
+        gender: Gender,
+        animals: Animals,
+    ): List<SearchResponseDto> {
         return if (animals == Animals.ALL) {
             userRepository.getRandomUserWithGender(gender.toString())
                 .map { user ->
@@ -84,7 +86,10 @@ class SSUDateService(
     }
 
     @Transactional
-    fun contact(oauthName: String, nickName: String): ContactResponseDto {
+    fun contact(
+        oauthName: String,
+        nickName: String,
+    ): ContactResponseDto {
         val fromUser =
             userRepository.findByOauthName(oauthName) ?: throw UserNotFoundException("해당 oauthName인 유저가 없습니다.")
 

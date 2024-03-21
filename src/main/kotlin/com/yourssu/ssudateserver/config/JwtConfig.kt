@@ -12,7 +12,6 @@ class JwtConfig(
     private val jwtProvider: JwtProvider,
     private val blackTokenService: BlackTokenService,
 ) : SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity>() {
-
     override fun configure(http: HttpSecurity) {
         http.addFilterBefore(
             JwtFilter(jwtProvider, blackTokenService),

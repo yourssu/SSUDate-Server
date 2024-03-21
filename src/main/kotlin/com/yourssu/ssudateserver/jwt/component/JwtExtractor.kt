@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component
 class JwtExtractor(
     private val jwtProperties: JwtProperties,
 ) {
-
     fun extractOAuthName(token: String): String {
         return extractAllClaims(token)["oauthName", String::class.java]
             ?: throw AuthenticateException("JWT 토큰에 oauthName 클레임이 없습니다.")

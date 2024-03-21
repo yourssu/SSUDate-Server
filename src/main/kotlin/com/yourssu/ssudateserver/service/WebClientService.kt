@@ -17,21 +17,23 @@ class WebClientService(
 
     fun deleteUser(targetId: String): Boolean {
         println(targetId)
-        val webClient = WebClient.builder()
-            .baseUrl(kakaoDeleteProperties.removeUrl)
-            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .defaultHeader(HttpHeaders.AUTHORIZATION, "KakaoAK ${kakaoDeleteProperties.adminKey}")
-            .build()
+        val webClient =
+            WebClient.builder()
+                .baseUrl(kakaoDeleteProperties.removeUrl)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .defaultHeader(HttpHeaders.AUTHORIZATION, "KakaoAK ${kakaoDeleteProperties.adminKey}")
+                .build()
 
         try {
-            val response = webClient.post()
-                .body(
-                    BodyInserters.fromFormData("target_id_type", "user_id")
-                        .with("target_id", targetId)
-                )
-                .retrieve()
-                .toEntity(String::class.java)
-                .block()
+            val response =
+                webClient.post()
+                    .body(
+                        BodyInserters.fromFormData("target_id_type", "user_id")
+                            .with("target_id", targetId),
+                    )
+                    .retrieve()
+                    .toEntity(String::class.java)
+                    .block()
 
             if (response?.statusCode?.is2xxSuccessful == true) {
                 return true

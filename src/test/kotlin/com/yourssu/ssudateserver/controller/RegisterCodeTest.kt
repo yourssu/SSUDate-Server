@@ -11,7 +11,6 @@ import org.springframework.test.web.servlet.post
 
 @ActiveProfiles("test")
 class RegisterCodeTest : BaseTest() {
-
     @Test
     fun registerCodeTest() {
         setPrincipal("oauthName1")
@@ -22,10 +21,11 @@ class RegisterCodeTest : BaseTest() {
         val toUser = userRepository.findByOauthName("oauthName2")!!
         val previous = toUser.ticket
 
-        val test = mockMvc.post("/register/code") {
-            contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(registerCodeRequestDto)
-        }
+        val test =
+            mockMvc.post("/register/code") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(registerCodeRequestDto)
+            }
 
         test.andExpect {
             status { isOk() }
@@ -45,10 +45,11 @@ class RegisterCodeTest : BaseTest() {
 
         val registerCodeRequestDto = RegisterCodeRequestDto("code1")
 
-        val test = mockMvc.post("/register/code") {
-            contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(registerCodeRequestDto)
-        }
+        val test =
+            mockMvc.post("/register/code") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(registerCodeRequestDto)
+            }
 
         test.andExpect {
             status { isBadRequest() }
@@ -70,10 +71,11 @@ class RegisterCodeTest : BaseTest() {
             content = objectMapper.writeValueAsString(registerCodeRequestDto)
         }
 
-        val test = mockMvc.post("/register/code") {
-            contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(registerCodeRequestDto)
-        }
+        val test =
+            mockMvc.post("/register/code") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(registerCodeRequestDto)
+            }
 
         test.andExpect {
             status { isBadRequest() }
@@ -91,10 +93,11 @@ class RegisterCodeTest : BaseTest() {
 
         val registerCodeRequestDto = RegisterCodeRequestDto("code3")
 
-        val test = mockMvc.post("/register/code") {
-            contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(registerCodeRequestDto)
-        }
+        val test =
+            mockMvc.post("/register/code") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(registerCodeRequestDto)
+            }
 
         test.andExpect {
             status { isBadRequest() }
@@ -118,10 +121,11 @@ class RegisterCodeTest : BaseTest() {
             content = objectMapper.writeValueAsString(registerCodeRequestDtoFirst)
         }
 
-        val test = mockMvc.post("/register/code") {
-            contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(registerCodeRequestDtoSecond)
-        }
+        val test =
+            mockMvc.post("/register/code") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(registerCodeRequestDtoSecond)
+            }
 
         test.andExpect {
             status { isBadRequest() }

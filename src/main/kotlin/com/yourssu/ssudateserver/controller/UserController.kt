@@ -32,13 +32,11 @@ import javax.validation.Valid
 class UserController(
     private val userService: UserService,
 ) {
-
     @PostMapping("/register/male")
     fun registerMale(
         @Valid @RequestBody
         registerRequestDto: RegisterMaleRequestDto,
     ): RegisterResponseDto {
-
         if (registerRequestDto.animals == MaleAnimals.ALL) {
             throw AllCanNotRegisterException("ALL은 등록불가능 합니다.")
         }
@@ -83,7 +81,9 @@ class UserController(
     }
 
     @GetMapping("/users/my")
-    fun getMyInfo(@AuthenticationPrincipal userPrincipal: UserPrincipal): UserInfoResponseDto {
+    fun getMyInfo(
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+    ): UserInfoResponseDto {
         return userService.getMyInfo(oauthName = userPrincipal.name)
     }
 
@@ -92,13 +92,12 @@ class UserController(
         @RequestBody updateRequestDto: UpdateRequestDto,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
     ): UpdateResponseDto {
-
         return userService.updateUserInfo(
             updateRequestDto.nickName,
             updateRequestDto.mbti,
             updateRequestDto.introduce,
             updateRequestDto.contact,
-            userPrincipal.name
+            userPrincipal.name,
         )
     }
 

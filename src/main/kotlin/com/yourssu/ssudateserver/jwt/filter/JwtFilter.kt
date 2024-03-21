@@ -16,7 +16,6 @@ class JwtFilter(
     private val jwtProvider: JwtProvider,
     private val blackTokenService: BlackTokenService,
 ) : OncePerRequestFilter() {
-
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,

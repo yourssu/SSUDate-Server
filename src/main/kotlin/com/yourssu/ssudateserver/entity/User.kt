@@ -23,47 +23,34 @@ class User(
     @field:Id
     @field:GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-
     @field:Column(name = "animals")
     @field:Enumerated(EnumType.STRING)
     val animals: Animals,
-
     @field:Column(name = "mbti")
     @field:Enumerated(EnumType.STRING)
     var mbti: MBTI,
-
     @field:Column(name = "nick_name", unique = true)
     var nickName: String,
-
     @field:Column(name = "o_auth_name", unique = true)
     val oauthName: String,
-
     @field:Column(name = "introduction", length = 100)
     var introduce: String,
-
     @field:Column(name = "contact")
     var contact: String,
-
     @field:Column(name = "weight")
     var weight: Int = 0,
-
     @field:Column(name = "ticket")
     var ticket: Int = 2,
-
     @field:Column(name = "gender")
     @field:Enumerated(EnumType.STRING)
     val gender: Gender,
-
     @field:Column(name = "role")
     @field:Enumerated(EnumType.STRING)
     val role: RoleType,
-
     @field:Column(name = "code")
     var code: String,
-
     @field:Column(name = "code_input_chance")
     var codeInputChance: Int = 1,
-
     @field:Column(name = "created_at")
     val createdAt: LocalDateTime,
 ) {

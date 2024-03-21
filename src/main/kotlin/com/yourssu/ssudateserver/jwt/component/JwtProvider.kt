@@ -14,11 +14,11 @@ class JwtProvider(
     private val userService: UserService,
     private val jwtExtractor: JwtExtractor,
 ) {
-
     fun authenticate(token: String): Authentication {
         val oauthName = jwtExtractor.extractOAuthName(token)
-        val user = userService.searchUser(oauthName)
-            ?: throw AuthenticateException("Jwt 토큰에 해당하는 유저가 존재하지 않습니다.")
+        val user =
+            userService.searchUser(oauthName)
+                ?: throw AuthenticateException("Jwt 토큰에 해당하는 유저가 존재하지 않습니다.")
 
         return UsernamePasswordAuthenticationToken(
             UserPrincipal.from(user, token),

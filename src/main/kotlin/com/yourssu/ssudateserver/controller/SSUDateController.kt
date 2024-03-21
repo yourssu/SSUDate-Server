@@ -22,7 +22,6 @@ import javax.validation.Valid
 class SSUDateController(
     private val ssuDateService: SSUDateService,
 ) {
-
     @GetMapping("/search/recent")
     fun searchRecent(): List<SearchResponseDto> {
         return ssuDateService.recentSearch()
@@ -55,7 +54,6 @@ class SSUDateController(
         contactRequestDto: ContactRequestDto,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
     ): ContactResponseDto {
-
         return ssuDateService.contact(userPrincipal.name, contactRequestDto.nickName)
     }
 }

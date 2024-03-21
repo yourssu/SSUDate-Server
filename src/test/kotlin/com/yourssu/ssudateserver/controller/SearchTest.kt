@@ -9,7 +9,6 @@ import org.springframework.test.web.servlet.get
 
 @ActiveProfiles("test")
 class SearchTest : BaseTest() {
-
     @Test
     @WithMockUser
     fun searchMaleAllTest() {

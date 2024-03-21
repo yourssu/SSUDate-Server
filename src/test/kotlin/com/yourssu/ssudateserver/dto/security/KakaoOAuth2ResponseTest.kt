@@ -9,13 +9,13 @@ import java.time.ZoneOffset
 import java.time.ZonedDateTime
 
 class KakaoOAuth2ResponseTest {
-
     private val mapper = ObjectMapper()
 
     @Test
     fun testMapToKakaoAuthResponse() {
         // given
-        val serializedResponse = """
+        val serializedResponse =
+            """
             {
                 "id": 1234567890,
                 "connected_at": "2022-01-02T00:12:34Z",
@@ -34,7 +34,7 @@ class KakaoOAuth2ResponseTest {
                     "email": "test@gmail.com"
                 }
             }
-        """.trimIndent()
+            """.trimIndent()
 
         val attributes: Map<String, Any> =
             mapper.readValue(serializedResponse, object : TypeReference<Map<String, Any>>() {})
@@ -46,10 +46,12 @@ class KakaoOAuth2ResponseTest {
         assertThat(result).isEqualTo(
             KakaoOAuth2Response(
                 id = 1234567890L,
-                connectedAt = ZonedDateTime.of(2022, 1, 2, 0, 12, 34, 0, ZoneOffset.UTC)
+                connectedAt =
+                ZonedDateTime.of(2022, 1, 2, 0, 12, 34, 0, ZoneOffset.UTC)
                     .withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime(),
                 properties = mapOf("nickname" to "홍길동"),
-                kakaoAccount = KakaoOAuth2Response.KakaoAccount(
+                kakaoAccount =
+                KakaoOAuth2Response.KakaoAccount(
                     profileNicknameNeedsAgreement = false,
                     profile = KakaoOAuth2Response.KakaoAccount.Profile(nickname = "홍길동"),
                     hasEmail = true,

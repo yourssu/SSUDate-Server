@@ -33,7 +33,6 @@ class UserService(
     private val blackTokenService: BlackTokenService,
     private val webClientService: WebClientService,
 ) {
-
     fun searchUser(oauthName: String): User? {
         return userRepository.findByOauthName(oauthName)
     }
@@ -59,9 +58,13 @@ class UserService(
     }
 
     @Transactional
-    fun refreshToken(refreshToken: String, oauthName: String): RefreshTokenResponseDto {
-        val foundedToken = refreshTokenService.findRefreshToken(oauthName)
-            ?: throw RefreshTokenNotFoundException("유저의 refreshToken이 존재하지 않습니다.")
+    fun refreshToken(
+        refreshToken: String,
+        oauthName: String,
+    ): RefreshTokenResponseDto {
+        val foundedToken =
+            refreshTokenService.findRefreshToken(oauthName)
+                ?: throw RefreshTokenNotFoundException("유저의 refreshToken이 존재하지 않습니다.")
 
         if (refreshToken != foundedToken.refreshToken) {
             refreshTokenService.removeRefreshToken(oauthName)
@@ -77,7 +80,10 @@ class UserService(
     }
 
     @Transactional
-    fun logout(accessToken: String, oauthName: String) {
+    fun logout(
+        accessToken: String,
+        oauthName: String,
+    ) {
         userRepository.findByOauthName(oauthName) ?: throw UserNotFoundException("해당 oauthName인 유저가 없습니다.")
 
         refreshTokenService.removeRefreshToken(oauthName)
@@ -103,20 +109,21 @@ class UserService(
             throw NickNameDuplicateException("이미 존재하는 닉네임이에요.")
         }
 
-        val saveUser = userRepository.save(
-            User(
-                animals = animals,
-                mbti = mbti,
-                nickName = nickName,
-                oauthName = oauthName,
-                introduce = introduce,
-                contact = contact,
-                gender = gender,
-                role = RoleType.USER,
-                code = generateUniqueReferralCode(),
-                createdAt = LocalDateTime.now(),
-            ),
-        )
+        val saveUser =
+            userRepository.save(
+                User(
+                    animals = animals,
+                    mbti = mbti,
+                    nickName = nickName,
+                    oauthName = oauthName,
+                    introduce = introduce,
+                    contact = contact,
+                    gender = gender,
+                    role = RoleType.USER,
+                    code = generateUniqueReferralCode(),
+                    createdAt = LocalDateTime.now(),
+                ),
+            )
 
         val accessToken = jwtGenerator.generateAccessToken(oauthName)
         val refreshToken = jwtGenerator.generateRefreshToken(oauthName)
@@ -154,12 +161,13 @@ class UserService(
             throw NickNameDuplicateException("이미 존재하는 닉네임이에요.")
         }
 
-        val updatedUser = user.updateInfo(
-            nickName = nickName,
-            mbti = mbti,
-            introduce = introduce,
-            contact = contact,
-        )
+        val updatedUser =
+            user.updateInfo(
+                nickName = nickName,
+                mbti = mbti,
+                introduce = introduce,
+                contact = contact,
+            )
 
         return UpdateResponseDto(
             id = user.id!!,
@@ -176,7 +184,10 @@ class UserService(
     }
 
     @Transactional
-    fun registerCode(friendCode: String, oauthName: String): UserInfoResponseDto {
+    fun registerCode(
+        friendCode: String,
+        oauthName: String,
+    ): UserInfoResponseDto {
         val user =
             userRepository.findByOauthName(oauthName) ?: throw UserNotFoundException("해당 oauthName인 유저가 없습니다.")
 
@@ -191,8 +202,9 @@ class UserService(
         codeRepository.findByFromCodeAndToCode(friendCode, myCode)?.run {
             throw DuplicateCodeException("친구가 이미 당신의 코드를 등록했어요.")
         }
-        val toUser = userRepository.findByCode(friendCode)
-            ?: throw UserNotFoundException("해당 코드의 유저가 존재하지 않아요.")
+        val toUser =
+            userRepository.findByCode(friendCode)
+                ?: throw UserNotFoundException("해당 코드의 유저가 존재하지 않아요.")
 
         val code = user.registerCode(toUser)
         val updatedUser = userRepository.save(user)
@@ -216,7 +228,10 @@ class UserService(
     }
 
     @Transactional
-    fun deleteUser(accessToken: String, oauthName: String) {
+    fun deleteUser(
+        accessToken: String,
+        oauthName: String,
+    ) {
         val user = userRepository.findByOauthName(oauthName) ?: throw UserNotFoundException("해당 oauthName인 유저가 없습니다.")
 
         webClientService.deleteUser(oauthName.removePrefix("kakao_"))

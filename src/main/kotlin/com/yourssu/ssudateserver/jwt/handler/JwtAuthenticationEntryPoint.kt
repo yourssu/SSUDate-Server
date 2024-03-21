@@ -23,12 +23,13 @@ class JwtAuthenticationEntryPoint : AuthenticationEntryPoint {
     ) {
         val exception = request.getAttribute("AuthenticateException") as? AuthenticateException
 
-        val errorResponse = ErrorResponse(
-            time = LocalDateTime.now(),
-            status = HttpStatus.UNAUTHORIZED,
-            message = exception?.message ?: ex.message!!,
-            requestURI = request.requestURI.toString(),
-        )
+        val errorResponse =
+            ErrorResponse(
+                time = LocalDateTime.now(),
+                status = HttpStatus.UNAUTHORIZED,
+                message = exception?.message ?: ex.message!!,
+                requestURI = request.requestURI.toString(),
+            )
 
         with(response) {
             status = HttpStatus.UNAUTHORIZED.value()

@@ -8,8 +8,10 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class RefreshTokenService(private val repository: RefreshTokenRepository) {
-
-    fun saveTokenInfo(oauthName: String, refreshToken: String) {
+    fun saveTokenInfo(
+        oauthName: String,
+        refreshToken: String,
+    ) {
         repository.save(RefreshToken(oauthName, refreshToken))
     }
 

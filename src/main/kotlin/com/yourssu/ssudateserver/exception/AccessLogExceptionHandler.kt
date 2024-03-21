@@ -13,13 +13,19 @@ import javax.servlet.http.HttpServletRequest
 class AccessLogExceptionHandler {
     @ExceptionHandler(InvalidDateRangeException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun handleInvalidDateRangeException(exception: InvalidDateRangeException, request: HttpServletRequest): ErrorResponse {
+    fun handleInvalidDateRangeException(
+        exception: InvalidDateRangeException,
+        request: HttpServletRequest,
+    ): ErrorResponse {
         return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)
     }
 
     @ExceptionHandler(InvalidPasswordException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun handleInvalidPasswordException(exception: InvalidPasswordException, request: HttpServletRequest): ErrorResponse {
+    fun handleInvalidPasswordException(
+        exception: InvalidPasswordException,
+        request: HttpServletRequest,
+    ): ErrorResponse {
         return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.message!!, request.requestURI)
     }
 }

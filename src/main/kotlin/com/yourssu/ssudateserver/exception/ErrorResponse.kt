@@ -13,5 +13,5 @@ class ErrorResponse(
     val time: LocalDateTime,
     val status: HttpStatus,
     val message: String,
-    val requestURI: String
+    val requestURI: String,
 )

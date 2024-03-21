@@ -30,16 +30,17 @@ class LoggingInterceptor(
             val cachingRequest: ContentCachingRequestWrapper = request
             val cachingResponse: ContentCachingResponseWrapper = response
 
-            val excludedURIs = listOf(
-                "/logs",
-                "/v3/api-docs",
-                "/swagger-resources",
-                "/swagger-ui",
-                "/webjars",
-                "/swagger",
-                "/favicon",
-                "/oauth"
-            )
+            val excludedURIs =
+                listOf(
+                    "/logs",
+                    "/v3/api-docs",
+                    "/swagger-resources",
+                    "/swagger-ui",
+                    "/webjars",
+                    "/swagger",
+                    "/favicon",
+                    "/oauth",
+                )
 
             if (!excludedURIs.any { request.requestURI.startsWith(it) }) {
                 accessLogRepository.save(
@@ -51,7 +52,7 @@ class LoggingInterceptor(
                         requestBody = objectMapper.readTree(cachingRequest.contentAsByteArray).toString(),
                         responseBody = objectMapper.readTree(cachingResponse.contentAsByteArray).toString(),
                         createdAt = LocalDateTime.now(),
-                    )
+                    ),
                 )
             }
         }

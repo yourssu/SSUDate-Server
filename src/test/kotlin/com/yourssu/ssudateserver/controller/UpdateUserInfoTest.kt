@@ -11,22 +11,23 @@ import org.springframework.test.web.servlet.patch
 
 @ActiveProfiles("test")
 class UpdateUserInfoTest : BaseTest() {
-
     @Test
     fun updateMaleTest() {
         setPrincipal()
 
-        val requestDto = UpdateRequestDto(
-            nickName = "NICKNICK",
-            mbti = MBTI.INFP,
-            introduce = "hihihi",
-            contact = "01012345678",
-        )
+        val requestDto =
+            UpdateRequestDto(
+                nickName = "NICKNICK",
+                mbti = MBTI.INFP,
+                introduce = "hihihi",
+                contact = "01012345678",
+            )
 
-        val test = mockMvc.patch("/users/my") {
-            contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(requestDto)
-        }
+        val test =
+            mockMvc.patch("/users/my") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(requestDto)
+            }
 
         test.andExpect {
             status { isOk() }
@@ -46,16 +47,18 @@ class UpdateUserInfoTest : BaseTest() {
     @Test
     fun updateMaleTestFailNickNameDuplicate() {
         setPrincipal()
-        val requestDto = UpdateRequestDto(
-            nickName = "testNick2",
-            mbti = MBTI.INFP,
-            introduce = "hihihi",
-            contact = "01012345678",
-        )
-        val test = mockMvc.patch("/users/my") {
-            contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(requestDto)
-        }
+        val requestDto =
+            UpdateRequestDto(
+                nickName = "testNick2",
+                mbti = MBTI.INFP,
+                introduce = "hihihi",
+                contact = "01012345678",
+            )
+        val test =
+            mockMvc.patch("/users/my") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(requestDto)
+            }
 
         test.andExpect {
             status { isBadRequest() }

@@ -68,20 +68,21 @@ class BaseTest {
             if (animal == Animals.ALL) {
                 animal = Animals.PUSSUNG
             }
-            val user = User(
-                animals = animal,
-                mbti = mbti,
-                nickName = "testNick${it + 1}",
-                oauthName = "oauthName${it + 1}",
-                introduce = "Introduction${it + 1}",
-                contact = "Contact${it + 1}",
-                weight = it % 2,
-                createdAt = currentDateTime.plusSeconds(it.toLong()),
-                gender = gender,
-                role = RoleType.USER,
-                code = "code${it + 1}",
-                ticket = (it + 1) % 3,
-            )
+            val user =
+                User(
+                    animals = animal,
+                    mbti = mbti,
+                    nickName = "testNick${it + 1}",
+                    oauthName = "oauthName${it + 1}",
+                    introduce = "Introduction${it + 1}",
+                    contact = "Contact${it + 1}",
+                    weight = it % 2,
+                    createdAt = currentDateTime.plusSeconds(it.toLong()),
+                    gender = gender,
+                    role = RoleType.USER,
+                    code = "code${it + 1}",
+                    ticket = (it + 1) % 3,
+                )
             userList.add(user)
 //            println("${user.animals} ${user.createdAt} ${user.weight} ${user.mbti} ${user.gender}")
         }
@@ -90,16 +91,16 @@ class BaseTest {
         val user = saveAll[1]
 
         followRepository.save(
-            Follow(fromUserId = user.id!!, toUserId = user.id!! + 1L, createdAt = now())
+            Follow(fromUserId = user.id!!, toUserId = user.id!! + 1L, createdAt = now()),
         )
         followRepository.save(
-            Follow(fromUserId = user.id!!, toUserId = user.id!! + 2L, createdAt = now())
+            Follow(fromUserId = user.id!!, toUserId = user.id!! + 2L, createdAt = now()),
         )
 
         tokenService.saveTokenInfo(oauthName = "oauthName1", "refreshToken")
 
         codeRepository.save(
-            Code(fromCode = "code3", toCode = "code1", createdAt = now())
+            Code(fromCode = "code3", toCode = "code1", createdAt = now()),
         )
     }
 

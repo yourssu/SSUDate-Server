@@ -31,7 +31,10 @@ class CommonExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException::class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    fun handleUserNotFoundException(exception: UserNotFoundException, request: HttpServletRequest): ErrorResponse {
+    fun handleUserNotFoundException(
+        exception: UserNotFoundException,
+        request: HttpServletRequest,
+    ): ErrorResponse {
         return ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND, exception.message!!, request.requestURI)
     }
 

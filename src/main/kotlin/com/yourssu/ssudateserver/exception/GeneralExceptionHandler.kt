@@ -12,8 +12,16 @@ import javax.servlet.http.HttpServletRequest
 class GeneralExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun handleMethodArgumentNotValidException(exception: MethodArgumentNotValidException, request: HttpServletRequest): ErrorResponse {
-        return ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, exception.bindingResult.fieldError!!.defaultMessage.toString(), request.requestURI)
+    fun handleMethodArgumentNotValidException(
+        exception: MethodArgumentNotValidException,
+        request: HttpServletRequest,
+    ): ErrorResponse {
+        return ErrorResponse(
+            LocalDateTime.now(),
+            HttpStatus.BAD_REQUEST,
+            exception.bindingResult.fieldError!!.defaultMessage.toString(),
+            request.requestURI,
+        )
     }
 
 //    @ExceptionHandler(HttpMessageNotReadableException::class)

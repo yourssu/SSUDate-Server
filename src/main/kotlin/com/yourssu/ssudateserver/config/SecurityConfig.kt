@@ -42,38 +42,38 @@ class SecurityConfig(
     private val oauthCacheService: OauthCacheService,
     private val blackTokenService: BlackTokenService,
 ) {
-
     @Bean
     fun filterChain(
         http: HttpSecurity,
         oAuth2UserService: OAuth2UserService<OAuth2UserRequest, OAuth2User>,
-    ): SecurityFilterChain = http
-        .formLogin { it.disable() }
-        .logout { it.disable() }
-        .csrf { it.disable() }
-        .headers { it.frameOptions().disable() }
-        .cors {}
-        .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
-        .authorizeRequests {
-            it
-                .antMatchers("/search/contact", "/users/my").authenticated()
-                .antMatchers("/register/**", "/v2/api-docs", "/v3/**", "/swagger-resources/**", "/search/**")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .apply(JwtConfig(jwtProvider, blackTokenService))
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint)
-        }
-        .oauth2Login {
-            it.userInfoEndpoint { userInfo ->
-                userInfo.userService(oAuth2UserService)
+    ): SecurityFilterChain =
+        http
+            .formLogin { it.disable() }
+            .logout { it.disable() }
+            .csrf { it.disable() }
+            .headers { it.frameOptions().disable() }
+            .cors {}
+            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+            .authorizeRequests {
+                it
+                    .antMatchers("/search/contact", "/users/my").authenticated()
+                    .antMatchers("/register/**", "/v2/api-docs", "/v3/**", "/swagger-resources/**", "/search/**")
+                    .permitAll()
+                    .antMatchers(HttpMethod.GET, "/**").permitAll()
+                    .anyRequest().authenticated()
+                    .and()
+                    .apply(JwtConfig(jwtProvider, blackTokenService))
+                    .and()
+                    .exceptionHandling()
+                    .authenticationEntryPoint(authenticationEntryPoint)
             }
-            it.successHandler(oAuth2SuccessHandler())
-        }
-        .build()
+            .oauth2Login {
+                it.userInfoEndpoint { userInfo ->
+                    userInfo.userService(oAuth2UserService)
+                }
+                it.successHandler(oAuth2SuccessHandler())
+            }
+            .build()
 
     @Bean
     fun oAuth2UserService(): OAuth2UserService<OAuth2UserRequest, OAuth2User> =
@@ -91,40 +91,45 @@ class SecurityConfig(
         }
 
     @Bean
-    fun oAuth2SuccessHandler() = object : SimpleUrlAuthenticationSuccessHandler() {
-        @Throws(IOException::class, ServletException::class)
-        override fun onAuthenticationSuccess(
-            request: HttpServletRequest,
-            response: HttpServletResponse,
-            authentication: Authentication,
-        ) {
-            val oAuth2User = authentication.principal as OAuth2User
+    fun oAuth2SuccessHandler() =
+        object : SimpleUrlAuthenticationSuccessHandler() {
+            @Throws(IOException::class, ServletException::class)
+            override fun onAuthenticationSuccess(
+                request: HttpServletRequest,
+                response: HttpServletResponse,
+                authentication: Authentication,
+            ) {
+                val oAuth2User = authentication.principal as OAuth2User
 
-            if (oAuth2User.authorities.any { it.authority == "ROLE_GUEST" }) {
-                val oauthName = oAuth2User.name
+                if (oAuth2User.authorities.any { it.authority == "ROLE_GUEST" }) {
+                    val oauthName = oAuth2User.name
 
-                oauthCacheService.saveOauthName(oauthName)
+                    oauthCacheService.saveOauthName(oauthName)
 
-                val targetUrl =
-                    buildRedirectUrl(frontProperties.url + "/kakao-redirect", mapOf("oauthName" to oauthName))
+                    val targetUrl =
+                        buildRedirectUrl(frontProperties.url + "/kakao-redirect", mapOf("oauthName" to oauthName))
 
-                redirectStrategy.sendRedirect(request, response, targetUrl)
-            } else {
-                val accessToken = jwtGenerator.generateAccessToken(oAuth2User.name)
-                val refreshToken = jwtGenerator.generateRefreshToken(oAuth2User.name)
+                    redirectStrategy.sendRedirect(request, response, targetUrl)
+                } else {
+                    val accessToken = jwtGenerator.generateAccessToken(oAuth2User.name)
+                    val refreshToken = jwtGenerator.generateRefreshToken(oAuth2User.name)
 
-                refreshTokenService.saveTokenInfo(oauthName = oAuth2User.name, refreshToken = refreshToken)
+                    refreshTokenService.saveTokenInfo(oauthName = oAuth2User.name, refreshToken = refreshToken)
 
-                val targetUrl = buildRedirectUrl(
-                    frontProperties.url + "/kakao-redirect",
-                    mapOf("accessToken" to accessToken, "refreshToken" to refreshToken)
-                )
-                redirectStrategy.sendRedirect(request, response, targetUrl)
+                    val targetUrl =
+                        buildRedirectUrl(
+                            frontProperties.url + "/kakao-redirect",
+                            mapOf("accessToken" to accessToken, "refreshToken" to refreshToken),
+                        )
+                    redirectStrategy.sendRedirect(request, response, targetUrl)
+                }
             }
         }
-    }
 
-    private fun buildRedirectUrl(baseUri: String, queryParams: Map<String, String>): String =
+    private fun buildRedirectUrl(
+        baseUri: String,
+        queryParams: Map<String, String>,
+    ): String =
         UriComponentsBuilder.fromUriString(baseUri).apply {
             queryParams.forEach { (key, value) -> queryParam(key, value) }
         }.build().encode(StandardCharsets.UTF_8).toUriString()

@@ -14,24 +14,17 @@ class AccessLog(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-
     val ip: String?,
-
     @Column(columnDefinition = "TEXT", name = "os")
     val os: String?,
-
     @Column(columnDefinition = "TEXT", name = "request_url")
     val requestURL: String,
-
     @Column(name = "method")
     val method: String,
-
     @Column(columnDefinition = "TEXT", name = "request_body")
     val requestBody: String?,
-
     @Column(columnDefinition = "TEXT", name = "response_body")
     val responseBody: String?,
-
     @Column(name = "created_at")
     val createdAt: LocalDateTime,
 )

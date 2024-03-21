@@ -10,17 +10,17 @@ import org.springframework.test.web.servlet.post
 
 @ActiveProfiles("test")
 class RefreshTokenTest : BaseTest() {
-
     @Test
     fun refreshTokenTest() {
         setPrincipal()
 
         val refreshTokenRequestDto = RefreshTokenRequestDto("refreshToken")
 
-        val test = mockMvc.post("/refresh") {
-            contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(refreshTokenRequestDto)
-        }
+        val test =
+            mockMvc.post("/refresh") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(refreshTokenRequestDto)
+            }
 
         test
             .andExpect {
@@ -36,10 +36,11 @@ class RefreshTokenTest : BaseTest() {
 
         val refreshTokenRequestDto = RefreshTokenRequestDto("refreshToken")
 
-        val test = mockMvc.post("/refresh") {
-            contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(refreshTokenRequestDto)
-        }
+        val test =
+            mockMvc.post("/refresh") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(refreshTokenRequestDto)
+            }
 
         test
             .andExpect {
@@ -54,10 +55,11 @@ class RefreshTokenTest : BaseTest() {
 
         val refreshTokenRequestDto = RefreshTokenRequestDto("validToken")
 
-        val test = mockMvc.post("/refresh") {
-            contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(refreshTokenRequestDto)
-        }
+        val test =
+            mockMvc.post("/refresh") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(refreshTokenRequestDto)
+            }
 
         test
             .andExpect {

@@ -14,14 +14,10 @@ class Code(
     @field:Id
     @field:GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-
     @field:Column(name = "from_code")
     val fromCode: String,
-
     @field:Column(name = "to_code")
     val toCode: String,
-
     @field:Column(name = "created_at")
     val createdAt: LocalDateTime,
-
 )

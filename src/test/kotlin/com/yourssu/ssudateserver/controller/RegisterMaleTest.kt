@@ -12,23 +12,24 @@ import org.springframework.test.web.servlet.post
 
 @ActiveProfiles("test")
 class RegisterMaleTest : BaseTest() {
-
     @Test
     fun registerMaleTest() {
-        val requestDto = RegisterMaleRequestDto(
-            animals = MaleAnimals.WOLF,
-            nickName = "NICKNICK",
-            oauthName = "oauthName",
-            mbti = MBTI.INFP,
-            introduce = "hihihi",
-            contact = "01012345678",
-        )
+        val requestDto =
+            RegisterMaleRequestDto(
+                animals = MaleAnimals.WOLF,
+                nickName = "NICKNICK",
+                oauthName = "oauthName",
+                mbti = MBTI.INFP,
+                introduce = "hihihi",
+                contact = "01012345678",
+            )
         oauthCacheService.saveOauthName(requestDto.oauthName)
 
-        val test = mockMvc.post("/register/male") {
-            contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(requestDto)
-        }
+        val test =
+            mockMvc.post("/register/male") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(requestDto)
+            }
 
         test.andExpect {
             status { isOk() }
@@ -51,19 +52,21 @@ class RegisterMaleTest : BaseTest() {
 
     @Test
     fun registerMaleFailOauthNameNotFoundTest() {
-        val requestDto = RegisterMaleRequestDto(
-            animals = MaleAnimals.WOLF,
-            nickName = "NICKNICK",
-            oauthName = "oauthName",
-            mbti = MBTI.INFP,
-            introduce = "hihihi",
-            contact = "01012345678",
-        )
+        val requestDto =
+            RegisterMaleRequestDto(
+                animals = MaleAnimals.WOLF,
+                nickName = "NICKNICK",
+                oauthName = "oauthName",
+                mbti = MBTI.INFP,
+                introduce = "hihihi",
+                contact = "01012345678",
+            )
 
-        val test = mockMvc.post("/register/male") {
-            contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(requestDto)
-        }
+        val test =
+            mockMvc.post("/register/male") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(requestDto)
+            }
 
         test.andExpect {
             status { isNotFound() }
@@ -76,19 +79,21 @@ class RegisterMaleTest : BaseTest() {
 
     @Test
     fun registerMaleTestFailAnimalsAll() {
-        val requestDto = RegisterMaleRequestDto(
-            animals = MaleAnimals.ALL,
-            nickName = "NICKNICK",
-            oauthName = "oauthName",
-            mbti = MBTI.INFP,
-            introduce = "hihihi",
-            contact = "01012345678",
-        )
+        val requestDto =
+            RegisterMaleRequestDto(
+                animals = MaleAnimals.ALL,
+                nickName = "NICKNICK",
+                oauthName = "oauthName",
+                mbti = MBTI.INFP,
+                introduce = "hihihi",
+                contact = "01012345678",
+            )
 
-        val test = mockMvc.post("/register/male") {
-            contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(requestDto)
-        }
+        val test =
+            mockMvc.post("/register/male") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(requestDto)
+            }
 
         test.andExpect {
             status { isBadRequest() }
@@ -101,20 +106,22 @@ class RegisterMaleTest : BaseTest() {
 
     @Test
     fun registerMaleTestFailNickNameDuplicate() {
-        val requestDto = RegisterMaleRequestDto(
-            animals = MaleAnimals.BEAR,
-            nickName = "testNick1",
-            oauthName = "oauthName",
-            mbti = MBTI.INFP,
-            introduce = "hihihi",
-            contact = "01012345678",
-        )
+        val requestDto =
+            RegisterMaleRequestDto(
+                animals = MaleAnimals.BEAR,
+                nickName = "testNick1",
+                oauthName = "oauthName",
+                mbti = MBTI.INFP,
+                introduce = "hihihi",
+                contact = "01012345678",
+            )
         oauthCacheService.saveOauthName(requestDto.oauthName)
 
-        val test = mockMvc.post("/register/male") {
-            contentType = MediaType.APPLICATION_JSON
-            content = objectMapper.writeValueAsString(requestDto)
-        }
+        val test =
+            mockMvc.post("/register/male") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(requestDto)
+            }
 
         test.andExpect {
             status { isBadRequest() }
