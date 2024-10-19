@@ -20,8 +20,9 @@ class SSUDateService(
     private val followRepository: FollowRepository,
 ) {
     @Transactional
-    fun recentSearch(): List<SearchResponseDto> {
-        return userRepository.findTop15ByOrderByCreatedAtDescIdDesc()
+    fun recentSearch(): List<SearchResponseDto> =
+        userRepository
+            .findTop15ByOrderByCreatedAtDescIdDesc()
             .map { user ->
                 SearchResponseDto(
                     animals = user.animals,
@@ -32,14 +33,14 @@ class SSUDateService(
                     weight = user.weight,
                 )
             }
-    }
 
     fun search(
         gender: Gender,
         animals: Animals,
-    ): List<SearchResponseDto> {
-        return if (animals == Animals.ALL) {
-            userRepository.getRandomUserWithGender(gender.toString())
+    ): List<SearchResponseDto> =
+        if (animals == Animals.ALL) {
+            userRepository
+                .getRandomUserWithGender(gender.toString())
                 .map { user ->
                     SearchResponseDto(
                         animals = user.animals,
@@ -51,7 +52,8 @@ class SSUDateService(
                     )
                 }
         } else {
-            userRepository.getRandomUserWithGenderAndAnimals(gender.toString(), animals.toString())
+            userRepository
+                .getRandomUserWithGenderAndAnimals(gender.toString(), animals.toString())
                 .map { user ->
                     SearchResponseDto(
                         animals = user.animals,
@@ -63,7 +65,6 @@ class SSUDateService(
                     )
                 }
         }
-    }
 
     fun searchContact(oauthName: String): List<SearchContactResponseDto> {
         val user =
@@ -71,7 +72,8 @@ class SSUDateService(
 
         val toUserIdList: List<Long> = followRepository.findAllByFromUserId(user.id!!).map { it.toUserId }
 
-        return userRepository.findAllByIdIn(toUserIdList)
+        return userRepository
+            .findAllByIdIn(toUserIdList)
             .map {
                 SearchContactResponseDto(
                     animals = it.animals,
@@ -91,7 +93,7 @@ class SSUDateService(
         nickName: String,
     ): ContactResponseDto {
         val fromUser =
-            userRepository.findByOauthName(oauthName) ?: throw UserNotFoundException("해당 oauthName인 유저가 없습니다.")
+            userRepository.findByOauthNameWithLock(oauthName) ?: throw UserNotFoundException("해당 oauthName인 유저가 없습니다.")
 
         if (fromUser.nickName == nickName) {
             throw SelfContactException("본인의 프로필은 조회할 수 없어요.")

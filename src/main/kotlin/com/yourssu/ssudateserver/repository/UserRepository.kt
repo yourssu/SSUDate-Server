@@ -29,4 +29,7 @@ interface UserRepository : JpaRepository<User, Long> {
     fun findByCode(code: String): User?
 
     fun findTop15ByOrderByCreatedAtDescIdDesc(): List<User>
+
+    @Query("SELECT * FROM users WHERE users.o_auth_name= :oauthName FOR UPDATE", nativeQuery = true)
+    fun findByOauthNameWithLock(oauthName: String): User?
 }
