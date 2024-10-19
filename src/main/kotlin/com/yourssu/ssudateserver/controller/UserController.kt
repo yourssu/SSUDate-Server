@@ -76,30 +76,25 @@ class UserController(
     fun registerCode(
         @RequestBody registerRequestDto: RegisterCodeRequestDto,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
-    ): UserInfoResponseDto {
-        return userService.registerCode(friendCode = registerRequestDto.code, oauthName = userPrincipal.name)
-    }
+    ): UserInfoResponseDto = userService.registerCode(friendCode = registerRequestDto.code, oauthName = userPrincipal.name)
 
     @GetMapping("/users/my")
     fun getMyInfo(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
-    ): UserInfoResponseDto {
-        return userService.getMyInfo(oauthName = userPrincipal.name)
-    }
+    ): UserInfoResponseDto = userService.getMyInfo(oauthName = userPrincipal.name)
 
     @PatchMapping("/users/my")
     fun updateMyInfo(
         @RequestBody updateRequestDto: UpdateRequestDto,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
-    ): UpdateResponseDto {
-        return userService.updateUserInfo(
+    ): UpdateResponseDto =
+        userService.updateUserInfo(
             updateRequestDto.nickName,
             updateRequestDto.mbti,
             updateRequestDto.introduce,
             updateRequestDto.contact,
             userPrincipal.name,
         )
-    }
 
     @PostMapping("/logout")
     fun logout(
@@ -113,9 +108,7 @@ class UserController(
     fun refreshToken(
         @RequestBody refreshTokenRequestDto: RefreshTokenRequestDto,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
-    ): RefreshTokenResponseDto {
-        return userService.refreshToken(refreshTokenRequestDto.refreshToken, userPrincipal.name)
-    }
+    ): RefreshTokenResponseDto = userService.refreshToken(refreshTokenRequestDto.refreshToken, userPrincipal.name)
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/users")

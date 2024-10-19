@@ -29,12 +29,12 @@ class JwtGenerator(
     private fun createToken(
         claims: MutableMap<String, Any>,
         expTime: Int,
-    ): String {
-        return Jwts.builder()
+    ): String =
+        Jwts
+            .builder()
             .setClaims(claims)
             .setIssuedAt(Date(System.currentTimeMillis()))
             .setExpiration(Date(System.currentTimeMillis() + expTime))
             .signWith(getKey(jwtProperties.secretKey), SignatureAlgorithm.HS256)
             .compact()
-    }
 }

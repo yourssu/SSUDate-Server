@@ -16,9 +16,9 @@ class WebClientService(
     val log = logger()
 
     fun deleteUser(targetId: String): Boolean {
-        println(targetId)
         val webClient =
-            WebClient.builder()
+            WebClient
+                .builder()
                 .baseUrl(kakaoDeleteProperties.removeUrl)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .defaultHeader(HttpHeaders.AUTHORIZATION, "KakaoAK ${kakaoDeleteProperties.adminKey}")
@@ -26,12 +26,13 @@ class WebClientService(
 
         try {
             val response =
-                webClient.post()
+                webClient
+                    .post()
                     .body(
-                        BodyInserters.fromFormData("target_id_type", "user_id")
+                        BodyInserters
+                            .fromFormData("target_id_type", "user_id")
                             .with("target_id", targetId),
-                    )
-                    .retrieve()
+                    ).retrieve()
                     .toEntity(String::class.java)
                     .block()
 

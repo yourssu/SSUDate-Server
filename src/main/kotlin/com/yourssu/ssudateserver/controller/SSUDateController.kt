@@ -23,37 +23,27 @@ class SSUDateController(
     private val ssuDateService: SSUDateService,
 ) {
     @GetMapping("/search/recent")
-    fun searchRecent(): List<SearchResponseDto> {
-        return ssuDateService.recentSearch()
-    }
+    fun searchRecent(): List<SearchResponseDto> = ssuDateService.recentSearch()
 
     @GetMapping("/search/male/{animals}")
     fun searchMale(
         @PathVariable animals: MaleAnimals,
-    ): List<SearchResponseDto> {
-        return ssuDateService.search(Gender.MALE, Animals.valueOf(animals.toString()))
-    }
+    ): List<SearchResponseDto> = ssuDateService.search(Gender.MALE, Animals.valueOf(animals.toString()))
 
     @GetMapping("/search/female/{animals}")
     fun searchFemale(
         @PathVariable animals: FemaleAnimals,
-    ): List<SearchResponseDto> {
-        return ssuDateService.search(Gender.FEMALE, Animals.valueOf(animals.toString()))
-    }
+    ): List<SearchResponseDto> = ssuDateService.search(Gender.FEMALE, Animals.valueOf(animals.toString()))
 
     @GetMapping("/search/contact")
     fun searchContact(
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
-    ): List<SearchContactResponseDto> {
-        return ssuDateService.searchContact(userPrincipal.name)
-    }
+    ): List<SearchContactResponseDto> = ssuDateService.searchContact(userPrincipal.name)
 
     @PostMapping("/contact")
     fun getContact(
         @Valid @RequestBody
         contactRequestDto: ContactRequestDto,
         @AuthenticationPrincipal userPrincipal: UserPrincipal,
-    ): ContactResponseDto {
-        return ssuDateService.contact(userPrincipal.name, contactRequestDto.nickName)
-    }
+    ): ContactResponseDto = ssuDateService.contact(userPrincipal.name, contactRequestDto.nickName)
 }
